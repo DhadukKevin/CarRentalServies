@@ -1,0 +1,129 @@
+﻿@using CarRentalServies.Areas.Admin.Models
+@{
+    Layout = "~/Areas/Admin/Views/shared/_Admin_Layout.cshtml";
+    CarFilterModel filterModel = new CarFilterModel();
+}
+@using System.Data
+@model DataTable
+
+<div class="pagetitle">
+    <h1>Car List Page</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item">Users</li>
+            <li class="breadcrumb-item active">CarList</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Filter</h5>
+
+        <!-- No Labels Form -->
+        <form class="row g-3" method="post" asp-controller="Admin" asp-action="CarFilter" asp-area="Admin">
+            <div class="col-md-4">
+                <input type="text" class="form-control" placeholder="Car Name" asp-for="@filterModel.CarName">
+            </div>
+            <div class="col-md-4">
+                <select class="form-select" asp-for="@filterModel.StateID" asp-items="@(new SelectList(ViewBag.StateList,"StateID","StateName"))">
+                    <option>Select State</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <select class="form-select" asp-for="@filterModel.CityID" asp-items="@(new SelectList(ViewBag.CityList,"CityID","CityName"))">
+                    <option>Select City</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <select class="form-select" asp-for="@filterModel.TransmissionID" asp-items="@(new SelectList(ViewBag.TransmissionList,"TransmissionID","TransmissionName"))">
+                    <option>Select Transmission</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <select class="form-select" asp-for="@filterModel.FuelID" asp-items="@(new SelectList(ViewBag.FuelList,"FuelID","FuelTypeName"))">
+                    <option>Select Fuel</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <select class="form-select" asp-for="@filterModel.CarTypeID" asp-items="@(new SelectList(ViewBag.CarTypeList,"CarTypeID","CarTypeName"))">
+                    <option>Select Cartype</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+            </div>
+        </form><!-- End No Labels Form -->
+
+    </div>
+
+</div>
+
+<section class="section">
+    <div class="d-flex justify-content-between">
+        <div class="">
+        </div>
+        <div class="">
+            <a asp-area="Admin" asp-controller="Admin" asp-action="CarAddEdit">
+                <input type="button" class="btn btn-success" value="Add Car" />
+            </a>
+        </div>
+    </div>
+    <div class="col-6 mb-3">
+        
+    </div>
+    <div class="row align-items-top">
+        @foreach (DataRow dataRow in Model.Rows)
+        {
+            <div class="col-lg-4">
+                <div class="row-lg-4">
+
+                    <div class="card">
+
+                        <img class="card-img-top" src="@Url.Content(dataRow["CarPhoto"].ToString())" alt="Card image cap" style="width:auto; height:200px"/>
+                        
+                        <div class="card-body" >
+                            <div class="row">
+                                <div class="column">
+                                    <p class="card-title" style="margin-bottom: -15px">@dataRow["CarName"]</p>
+                                </div>
+                                <div class="column">
+                                    <p class="card-text" style="font-size: small; margin-bottom: -15px">@dataRow["TransmissionName"] @dataRow["CarTypeName"]</p>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="container" style=" border-radius: 10px;background-color: #d3d7de; ">
+                                    Ratings
+                                </div>
+                            </li>
+                            <li class="list-group-item">₹@dataRow["Price"]/hr</li>
+                        </ul>
+                        <div class="card-body">
+                            <a asp-controller="Admin" asp-area="Admin" asp-action="CarAddEdit" asp-route-CarID="@Convert.ToInt32(dataRow["CarID"])">Edit Car</a>
+                            <a asp-area="Admin" asp-controller="Admin" asp-action="Cardelete" asp-route-CarID="@Convert.ToInt32(dataRow["CarID"])" class="card-link" onclick="return fun1();">RemoveCar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+@section Scripts
+    {
+    <script>
+        function fun1() {
+            if (confirm("Are you sure you want to delete?")) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+}

@@ -1,0 +1,85 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/shared/_Admin_Layout.cshtml";
+}
+@using System.Data
+@model DataTable
+
+<div class="pagetitle">
+    <h1>Fuel Type Page</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">Fuel Type</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="d-flex justify-content-between card-header">
+                    <div class="">
+                        <h5>Fuel Type List</h5>
+                    </div>
+                    <div class="">
+                        <a asp-area="Admin" asp-controller="Car" asp-action="FuelTypeAddEdit">
+                            <input type="button" class="btn btn-success" value="Add Fuel Type" />
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <br />
+
+                    <!-- Table with hoverable rows -->
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="col-md-9">FuelTypeName</th>
+                                <th scope="col" class="col-md-3">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (DataRow dr in Model.Rows)
+                            {
+                                <tr>
+                                    <td>@dr["FuelTypeName"]</td>
+                                    <td>
+                                        <div class="d-flex">
+                                            <div class="me-2">
+                                                <form method="post" asp-area="Admin" asp-controller="Car" asp-action="FuelTypeDelete">
+                                                    <input type="hidden" value="@Convert.ToInt32(dr["FuelID"])" name="FuelID" />
+                                                    <button type="submit" class="btn btn-danger" value="Delete" onclick="return fun1();">Delete</button>
+                                                </form>
+                                            </div>
+                                            <div class="ms-2">
+                                                <form asp-area="Admin" asp-controller="Car" asp-action="FuelTypeAddEdit">
+                                                    <input type="hidden" value="@Convert.ToInt32(dr["FuelID"])" name="FuelID" />
+                                                    <button type="submit" class="btn btn-info" value="Update">Update</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <!-- End Table with hoverable rows -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts
+    {
+    <script>
+        function fun1() {
+            if (confirm("Are you sure you want to delete?")) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+}

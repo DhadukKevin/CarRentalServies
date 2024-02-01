@@ -1,0 +1,44 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/shared/_Admin_Layout.cshtml";
+}
+@model CarRentalServies.Areas.Admin.Models.CityModel
+
+<div class="pagetitle">
+    <h1>State Add/Edit Page</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item">City</li>
+            <li class="breadcrumb-item active">Add</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">City Add/Edit Page</h5>
+
+        <!-- No Labels Form -->
+        <form class="row g-3" method="post" asp-controller="AddressBook" asp-action="CitySave" asp-area="Admin">
+            @Html.HiddenFor(x => x.CityID)
+
+            <div class="col-md-12">
+                <input type="text" class="form-control" placeholder="CityName" asp-for="CityName">
+            </div>
+            <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="CityCode" asp-for="CityCode">
+            </div>
+            <div class="col-md-6">
+                <select class="form-select" asp-for="StateID" asp-items="@(new SelectList(ViewBag.StateList,"StateID","StateName"))">
+                    <option>Select State</option>
+                </select>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+            </div>
+        </form><!-- End No Labels Form -->
+
+    </div>
+
+</div>

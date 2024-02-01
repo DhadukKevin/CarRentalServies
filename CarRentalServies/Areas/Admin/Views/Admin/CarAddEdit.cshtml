@@ -1,0 +1,96 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/shared/_Admin_Layout.cshtml";
+
+    //CarTypeDropDownModel modelCarType = new CarTypeDropDownModel();
+    //CityDropDownModel modelCity = new CityDropDownModel();
+    //FuelTypeDropDownModel modelFuel = new FuelTypeDropDownModel();
+    //TransmissionDropDownModel modelTransmission = new TransmissionDropDownModel();
+}
+@model CarRentalServies.Areas.Admin.Models.CarModel
+
+<div class="pagetitle">
+    <h1>Car Add/Edit Page</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item">Users</li>
+            <li class="breadcrumb-item active">Add</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Car Add/Edit Page</h5>
+
+        <!-- No Labels Form -->
+        <form class="row g-3" method="post" asp-controller="Admin" asp-action="CarSave" asp-area="Admin" enctype="multipart/form-data">
+            @Html.HiddenFor(x => x.CarID)
+            @Html.HiddenFor(y => y.CarPhoto)
+
+            <div class="col-md-12">
+                <input type="text" class="form-control" placeholder="Car Name" asp-for="CarName">
+            </div>
+            <div class="col-md-6">
+                
+                @*<!-- Render Existing Image -->
+                @if (!string.IsNullOrEmpty(Model.CarPhoto))
+                {
+                    <div class="mb-2">
+                        <label class="form-label ">Existing Product Image</label>
+                        <img src="@Url.Content(Model.CarPhoto)" alt="Car Photo" class="img-fluid" style="height:50px; width:50px;" />
+                    </div>
+                    <div class="mb-10 fv-row">
+                        <input type="file" name="CarImage" class="form-control mb-2 w-50" accept=".png, .jpg, .jpeg" asp-for="CarImage" />
+                        <span asp-validation-for="CarPhoto" class="text-danger"></span>
+                    </div>
+                }
+                <!-- Image Upload for Edit -->
+                @if (string.IsNullOrEmpty(Model.CarPhoto))
+                {*@
+                    <div class="mb-10 fv-row">
+                        <input type="file" name="CarImage" class="form-control mb-2" accept=".png, .jpg, .jpeg" asp-for="CarImage" />
+                        <span asp-validation-for="CarImage" class="text-danger"></span>
+                    </div>
+                @*}*@
+            </div>
+            <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="Driven Kms" asp-for="Kms">
+            </div>
+            <div class="col-12">
+                <input type="text" class="form-control" placeholder="Location" asp-for="Location">
+            </div>
+            <div class="col-md-4">
+                <select class="form-select" asp-for="CityID" asp-items="@(new SelectList(ViewBag.CityList,"CityID","CityName"))">
+                    <option>Select City</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <select class="form-select" asp-for="FuelID" asp-items="@(new SelectList(ViewBag.FuelList,"FuelID","FuelTypeName"))">
+                    <option selected>Select FuelType</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <select class="form-select" asp-for="CarTypeID" asp-items="@(new SelectList(ViewBag.CarTypeList,"CarTypeID","CarTypeName"))">
+                    <option selected>Select CarType</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <select class="form-select" asp-for="TransmissionID" asp-items="@(new SelectList(ViewBag.TransmissionList,"TransmissionID","TransmissionName"))">
+                    <option selected>Select TransmissionType</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="Price" asp-for="Price">
+            </div>
+            <div class="col-md-12">
+                <input type="text" class="form-control" placeholder="Car Detail" asp-for="CarDetail">
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+            </div>
+        </form><!-- End No Labels Form -->
+
+    </div>
+
+</div>

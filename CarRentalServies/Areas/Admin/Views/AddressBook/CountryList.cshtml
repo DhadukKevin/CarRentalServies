@@ -1,0 +1,117 @@
+﻿
+@using CarRentalServies.Areas.Admin.Models
+@{
+    Layout = "~/Areas/Admin/Views/shared/_Admin_Layout.cshtml";
+    CountryFilterModel filterModel = new CountryFilterModel();
+}
+@using System.Data
+@model DataTable
+
+<div class="pagetitle">
+    <h1>Country List Page</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">Country List</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Filter</h5>
+
+        <!-- No Labels Form -->
+        <form class="row g-3" method="post" asp-controller="AddressBook" asp-action="CountryFilter" asp-area="Admin">
+            
+
+            <div class="col-md-4">
+                <input type="text" class="form-control" placeholder="CountryName" asp-for="@filterModel.CountryName">
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" placeholder="CountryCode" asp-for="@filterModel.CountryCode">
+            </div>
+
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+            </div>
+        </form><!-- End No Labels Form -->
+
+    </div>
+
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="d-flex justify-content-between card-header">
+                    <div class="">
+                        <h5>Country List</h5>
+                    </div>
+                    <div class="">
+                        <a asp-area="Admin" asp-controller="AddressBook" asp-action="CountryAddEdit">
+                            <input type="button" class="btn btn-success" value="Add Country" />
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <br />
+
+                    <!-- Table with hoverable rows -->
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Country Name</th>
+                                <th scope="col">Country Code</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (DataRow dr in Model.Rows)
+                            {
+                                <tr>
+                                    <td>@dr["CountryName"]</td>
+                                    <td>@dr["CountryCode"]</td>
+                                    <td>
+                                        <div class="d-flex">
+
+                                            <div class="me-2">
+                                                <form method="post" asp-area="Admin" asp-controller="Addressbook" asp-action="CountryDelete">
+                                                    <input type="hidden" value="@Convert.ToInt32(dr["CountryID"])" name="CountryID" />
+                                                    <button type="submit" class="btn btn-danger" value="Delete" onclick="return fun1();">Delete</button>
+                                                </form>
+                                            </div>
+                                            <div class="ms-2">
+                                                <form asp-area="Admin" asp-controller="Addressbook" asp-action="CountryAddEdit">
+                                                    <input type="hidden" value="@Convert.ToInt32(dr["CountryID"])" name="CountryID" />
+                                                    <button type="submit" class="btn btn-info" value="Edit">Edit</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <!-- End Table with hoverable rows -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts
+    {
+    <script>
+        function fun1() {
+            if (confirm("Are you sure you want to delete?")) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+}

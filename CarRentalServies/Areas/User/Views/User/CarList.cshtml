@@ -1,0 +1,120 @@
+﻿@using CarRentalServies.BAL;
+@using CarRentalServies.Areas.User.Models
+@{
+    Console.WriteLine("List page: " + CV.UserID());
+    if (CV.UserID() == 0)
+    {
+        Console.WriteLine("List page: Logn null");
+        Layout = "~/Areas/User/Views/shared/_User_Layout_Without_Login.cshtml";
+    }
+    else
+    {
+        Console.WriteLine("List page: login");
+        Layout = "~/Areas/User/Views/shared/_User_Layout.cshtml";
+    }
+    
+    CarModel carModel = new CarModel();
+    CarFilterModel filterModel = new CarFilterModel();
+    int CityID = Convert.ToInt32(TempData["CityID"]);
+}
+@using System.Data
+@model DataTable
+
+<div class="pagetitle">
+    <i class="bi bi-list toggle-sidebar-btn"></i>
+    <h1>Car List Page</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item">Users</li>
+            <li class="breadcrumb-item active">CarList</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Filter</h5>
+
+        <!-- No Labels Form -->
+        <form class="row g-3" method="post" asp-controller="User" asp-action="CarByCityIDFromDateToDate" asp-area="User" asp-route-CityID="@CityID">
+            <div class="col-md-4">
+                <label for="birthdaytime">From (date and time):</label>
+                <input type="datetime-local" id="date_picker" name="FromDate" min="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" asp-for="@carModel.FromDate">
+                @*<input type="text" class="form-control" placeholder="Car Name" asp-for="@filterModel.CarName">*@
+            </div>
+            <div class="col-md-4">
+                <label for="birthdaytime">To (date and time):</label>
+                <input type="datetime-local" id="date_picker" name="ToDate" min="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" asp-for="@carModel.ToDate">
+                @*<input type="text" class="form-control" placeholder="Car Name" asp-for="@filterModel.CarName">*@
+            </div>
+
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+            </div>
+        </form><!-- End No Labels Form -->
+
+    </div>
+
+</div>
+
+<section class="section">
+    <div class="d-flex justify-content-between">
+        <div class="">
+        </div>
+    </div>
+    <div class="col-6 mb-3">
+    </div>
+
+    <div class="row align-items-top">
+        @foreach (DataRow dataRow in Model.Rows)
+        {
+            <div class="col-lg-4">
+                <div class="row-lg-4">
+                    <a asp-area="User" asp-controller="User" asp-action="CarDetailPage" asp-route-CarID="@dataRow["CarID"]">
+                        <div class="card">
+
+                            <img class="card-img-top" src="@Url.Content(dataRow["CarPhoto"].ToString())" alt="Card image cap" style="width:auto; height:200px" />
+
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="column">
+                                        <p class="card-title" style="margin-bottom: -15px">@dataRow["CarName"]</p>
+                                    </div>
+                                    <div class="column">
+                                        <p class="card-text" style="font-size: small; margin-bottom: -15px">@dataRow["TransmissionName"] @dataRow["CarTypeName"]</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <div class="container" style=" border-radius: 10px;background-color: #d3d7de; ">
+                                        Ratings
+                                    </div>
+                                </li>
+                                <li class="list-group-item">₹@dataRow["Price"]/hr</li>
+                            </ul>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+@section Scripts
+    {
+    <script>
+        function fun1() {
+            if (confirm("Are you sure you want to delete?")) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        var today = new Date();
+        $('#date_picker').attr('min', today);
+    </script>
+}

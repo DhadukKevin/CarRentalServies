@@ -1,0 +1,40 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/shared/_Admin_Layout.cshtml";
+}
+@model CarRentalServies.Areas.Admin.Models.CountryModel
+
+<div class="pagetitle">
+    <h1>Car Add/Edit Page</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item">Users</li>
+            <li class="breadcrumb-item active">Add</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Car Add/Edit Page</h5>
+
+        <!-- No Labels Form -->
+        <form class="row g-3" method="post" asp-controller="AddressBook" asp-action="CountrySave" asp-area="Admin">
+            @Html.HiddenFor(x => x.CountryID)
+
+            <div class="col-md-12">
+                <input type="text" class="form-control" placeholder="Country Name" asp-for="CountryName">
+            </div>
+            <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="Country Code" asp-for="CountryCode">
+            </div>
+            
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+            </div>
+        </form><!-- End No Labels Form -->
+
+    </div>
+
+</div>

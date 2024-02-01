@@ -1,0 +1,157 @@
+﻿@using System.Globalization;
+@using CarRentalServies.BAL;
+@model CarRentalServies.Areas.User.Models.CarModel
+@{
+    Console.WriteLine("Deatil page: "+CV.UserID());
+    if (CV.UserID() == 0)
+    {
+        Layout = "~/Views/shared/Home_Page_Layout_Without_Login.cshtml";
+    }
+    else
+    {
+        Layout = "~/Areas/User/Views/shared/Home_Page_Layout.cshtml";
+    }
+   
+
+    DateTime FromDate = Convert.ToDateTime(TempData["FromDate"]);
+    DateTime ToDate = Convert.ToDateTime(TempData["ToDate"]);
+
+    TimeSpan value = ToDate.Subtract(FromDate);
+    int hour = 0;
+    if (value.Days>0)
+    {
+        hour =value.Days * 24;
+        hour = hour + value.Hours;
+    }
+    else
+    {
+        hour = value.Hours;
+    }
+
+    decimal? price = hour * Model.Price;
+}
+
+<a asp-area="User" asp-controller="User" asp-action="CarList" asp-route-CityID="@Model.CityID">
+    <h6>Back</h6>
+</a>
+<div class="row">
+    <div class="col-xl-8">
+        <div class="card">
+            <div class="card-body">
+                <br />
+                <!-- Slides only carousel -->
+                <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel" style="padding: 0px 0px 0px 150px;">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active" >
+                            <img src="@Url.Content(Model.CarPhoto)" style="height: 250px; width:500px;" alt="...">
+                        </div>
+                    </div>
+                </div><!-- End Slides only carousel-->
+
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <br />
+                <div class="row" style="display: inline-flex; width:500px;">
+                    <div class="column column-md-6">
+                        <h5 style="font-weight:bolder; font-size:large;">From</h5>
+                    </div>
+                    <div class="column column-md-6">
+                        <h6>@FromDate</h6>
+                    </div>
+
+                </div>
+                <div class="row" style="display: inline-flex;">
+                    <div class="column column-md-6">
+                        <h5 style="font-weight:bolder; font-size:large;">To</h5>
+                    </div>
+                    <div class="column column-md-6">
+                        <h6>@ToDate</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="padding:15px 10px;">
+            <div class="card-body">
+                <div class="row">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div class="column">
+                                <h3 style="font-weight:bolder; margin:-5px">@Model.CarName</h3>
+                            </div>
+                            <div class="column">
+                                <p class="card-text" style="font-size: small; margin-bottom: -15px;color: rgba(196, 191, 190);">@Model.TransmissionName - @Model.CarTypeName - @Model.SeatNumber Seats</p>
+                                <br />
+                                <i class="bi bi-star-fill">&nbsp &nbsp4.3</i>
+                            </div>
+                            <br />
+                        </li>
+                        <li class="list-group-item">
+                            <h3 style="font-weight:bolder; margin:20px 0px 0px 0px;">Booking Time</h3>
+                            <div class="card" style="margin:10px; padding:10px 0px 10px 0px; box-shadow:1px 1px 1px 1px grey;">
+                                <div class="card-body">
+                                    <div class="row" style="display: inline-flex;">
+                                        <div class="column column-md-6">
+                                            <h5 style="font-weight:bolder; font-size:large;">From</h5>
+                                        </div>
+                                        <div class="column column-md-6">
+                                            <h6>@FromDate</h6>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row" style="display: inline-flex; margin-left: 100px;margin-right: 100px;">
+                                        <div class="column column-md-6">
+                                            <i class="bi bi-arrow-right"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style="display: inline-flex;">
+                                        <div class="column column-md-6">
+                                            <h5 style="font-weight:bolder; font-size:large; text-align:end;">To</h5>
+                                        </div>
+                                        <div class="column column-md-6" style="text-align:end;">
+                                            <h6>@ToDate</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="column column-md-6">
+                            <h5 style="font-weight:bolder; font-size:large;">Total Hours</h5>
+                        </div>
+                        <h5>@hour</h5>
+                    </div>
+                    <div class="col-md-6">
+                        
+                        <div class="column column-md-6">
+                            <h5 style="font-weight:bolder; font-size:large;">Total Fare</h5>
+                        </div>
+                        <h5>@price</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="d-grid gap-2 mt-3">
+                        <a asp-area="User" asp-controller="User" asp-action="BookinSave" asp-route-CarID="@Model.CarID" asp-route-UserID="@CV.UserID()" asp-route-FromDate="@TempData["FromDate"]" asp-route-ToDate="@TempData["ToDate"]" asp-route-Email="@CV.Email()">
+                            <input type="button" class="btn btn-success" value="Book Car" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

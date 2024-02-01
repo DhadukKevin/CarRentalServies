@@ -1,0 +1,41 @@
+﻿@{
+    Layout = "~/Areas/User/Views/shared/Home_Page_layout.cshtml";
+}
+@using CarRentalServies.Areas.User.Models
+@model CityDropDownModel
+
+<div class="card" >
+    <img src="~/img/vistara_banner.jpg" class="card-img-top" alt="..." style="height: 390px;">
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title"></h5>
+
+        <!-- No Labels Form -->
+        <form class="row g-3" method="post" asp-controller="User" asp-action="CarList" asp-route-CityID="CityID" asp-area="User">
+            <div class="col-md-4">
+                
+            </div>
+            <div class="col-md-4">
+                <select class="form-select" asp-for="CityID" asp-items="@(new SelectList(ViewBag.CityList,"CityID","CityName"))">
+                    <option>Select City</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                
+            </div>
+
+            <div class="col-md-5">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            <div class="col-md-5">
+            </div>
+        </form><!-- End No Labels Form -->
+
+        <h5></h5>
+    </div>
+
+</div>

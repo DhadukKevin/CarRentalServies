@@ -1,0 +1,125 @@
+﻿@using CarRentalServies.Areas.Admin.Models
+@{
+    Layout = "~/Areas/Admin/Views/shared/_Admin_Layout.cshtml";
+    CityFilterModel filterModel = new CityFilterModel();
+}
+@using System.Data
+@model DataTable
+
+<div class="pagetitle">
+    <h1>City List Page</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">City List</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Filter</h5>
+
+        <!-- No Labels Form -->
+        <form class="row g-3" method="post" asp-controller="AddressBook" asp-action="CityFilter" asp-area="Admin">
+            <div class="col-md-4">
+                <input type="text" class="form-control" placeholder="StateName" asp-for="@filterModel.CityName">
+            </div>
+            <div class="col-md-4">
+                <select class="form-select" asp-for="@filterModel.StateID" asp-items="@(new SelectList(ViewBag.StateList,"StateID","StateName"))">
+                    <option>Select Country</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <select class="form-select" asp-for="@filterModel.CountryID" asp-items="@(new SelectList(ViewBag.CountryList,"CountryID","CountryName"))">
+                    <option>Select Country</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+            </div>
+        </form><!-- End No Labels Form -->
+
+    </div>
+
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="d-flex justify-content-between card-header">
+                    <div class="">
+                        <h5>City List</h5>
+                    </div>
+                    <div class="">
+                        <a asp-area="Admin" asp-controller="AddressBook" asp-action="CityAddEdit">
+                            <input type="button" class="btn btn-success" value="Add City" />
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <br />
+
+                    <!-- Table with hoverable rows -->
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">City Name</th>
+                                <th scope="col">City Code</th>
+                                <th scope="col">State Name</th>
+                                <th scope="col">Country Name</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (DataRow dr in Model.Rows)
+                            {
+                                <tr>
+                                    <td>@dr["CityName"]</td>
+                                    <td>@dr["CityCode"]</td>
+                                    <td>@dr["StateName"]</td>
+                                    <td>@dr["CountryName"]</td>
+                                    <td>
+                                        <div class="d-flex">
+
+                                            <div class="me-2">
+                                                <form method="post" asp-area="Admin" asp-controller="Addressbook" asp-action="CityDelete">
+                                                    <input type="hidden" value="@Convert.ToInt32(dr["CityID"])" name="CityID" />
+                                                    <button type="submit" class="btn btn-danger" value="Delete" onclick="return fun1();">Delete</button>
+                                                </form>
+                                            </div>
+                                            <div class="ms-2">
+                                                <form asp-area="Admin" asp-controller="Addressbook" asp-action="CityAddEdit">
+                                                    <input type="hidden" value="@Convert.ToInt32(dr["CityID"])" name="CityID" />
+                                                    <button type="submit" class="btn btn-info" value="Edit">Edit</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <!-- End Table with hoverable rows -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts
+    {
+    <script>
+        function fun1() {
+            if (confirm("Are you sure you want to delete?")) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+}
