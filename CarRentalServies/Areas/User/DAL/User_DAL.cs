@@ -76,5 +76,23 @@ namespace CarRentalServies.Areas.User.DAL
             }
             return false;
         }
+
+        public string CityName(int cityID)
+        {
+            SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
+            DbCommand dbCommand = sqlDatabase.GetStoredProcCommand("PR_CityNameByID");
+            sqlDatabase.AddInParameter(dbCommand, "@CityID", DbType.Int32, cityID);
+            DataTable dataTable = new DataTable();
+            using (IDataReader dataReader = sqlDatabase.ExecuteReader(dbCommand))
+            {
+                dataTable.Load(dataReader);
+            }
+            string? Cityname = "";
+            foreach (DataRow dataRow in dataTable.Rows)
+            {
+                Cityname = dataRow["CityName"].ToString();
+            }
+            return Cityname;
+        }
     }
 }

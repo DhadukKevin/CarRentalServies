@@ -1,118 +1,38 @@
-﻿@*@{
-    Layout = "~/Views/Shared/_Login_Layout.cshtml";
-}
-@using CarRentalServies.Areas.SEC_Login.Models;
-@model SEC_LoginModel
-
-
-
-<section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
-
-                <div class="card mb-3">
-
-                    <div class="card-body">
-
-                        <div class="pt-4 pb-2">
-                            <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
-                            <p class="text-center small">Enter your username & password to login</p>
-                        </div>
-                        @if (TempData["Error"] != null)
-                        {
-                            <div class="text-danger">
-                                @Html.Raw(@Convert.ToString(TempData["Error"]))
-                            </div>
-                        }
-                        <form class="row g-3 needs-validation" asp-area="SEC_Login" asp-action="Login" asp-controller="SEC_Login">
-
-                            <div class="col-12">
-                                <label for="yourUsername" class="form-label">Username</label>
-                                <div class="input-group has-validation">
-                                    <input type="text" class="form-control" asp-for="Name" required>
-                                    <span asp-validation-for="Name" class="text-danger"></span>
-                                    <div class="invalid-feedback">Please enter your username.</div>
-                                </div>
-                            </div>
-
-                            <div class="col-12">
-                                <label for="yourPassword" class="form-label">Password</label>
-                                <input type="password" class="form-control" asp-for="Password" required>
-                                <span asp-validation-for="Password" class="text-danger"></span>
-                                <div class="invalid-feedback">Please enter your password!</div>
-                            </div>
-
-                            <div class="col-12">
-                                <button class="btn btn-primary w-100" type="submit">Login</button>
-                            </div>
-                            <div class="col-12">
-                                <p class="small mb-0">Don't have account? <a asp-area="SEC_Login" asp-controller="SEC_Login" asp-action="SEC_Registration">Create an account</a></p>
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
-
-
-            </div>
-        </div>
-    </div>
-
-</section>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}*@
-
-@using CarRentalServies.BAL;
-
+﻿
 @{
-    Console.WriteLine(CV.UserID());
-    if (CV.UserID() == 0)
-    {
-       Layout = "~/Views/shared/Home_Page_Layout_Without_Login.cshtml";
-    }
-    else
-    {
-        Layout = "~/Areas/User/Views/shared/Home_Page_Layout.cshtml";
-    }
+
+    Layout = "~/Views/Shared/Index_Layout.cshtml";
+
 }
 @using CarRentalServies.Areas.User.Models
 @model CityDropDownModel
 
 <div class="card"> 
-    <img src="~/img/vistara_banner.jpg" class="card-img-top" alt="..." style="height: 390px;">
+    <img src="~/img/vistara_banner.jpg" style="height:500px">
 </div>
 
-<div class="card">
+<div class="card" style="margin-top:-50px; padding-bottom:100px">
     <div class="card-body">
-        <h5 class="card-title"></h5>
+        <h5 class="card-title" style="text-align:center">Please Select A Loaction</h5>
 
         <!-- No Labels Form -->
-        <form class="row g-3" method="post" asp-controller="User" asp-action="CarList" asp-route-CityID="CityID" asp-area="User">
-            <div class="col-md-4">
-            </div>
+        <form class="row g-3" method="post" asp-controller="User" asp-action="GetCarPage" asp-route-CityID="CityID" asp-area="User">
+            <div class="col-md-4"></div>
             <div class="col-md-4">
                 <select class="form-select" asp-for="CityID" asp-items="@(new SelectList(ViewBag.CityList,"CityID","CityName"))">
                     <option>Select City</option>
                 </select>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4"></div>
+            <div class="col-md-4"></div>
+            <div class="col-md-4" style="padding-left:210px;">
+                <button type="submit" class="btn btn-primary" >Submit</button>
             </div>
-
-            <div class="col-md-5">
-            </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-            <div class="col-md-5">
-            </div>
+            <div class="col-md-4"></div>
         </form><!-- End No Labels Form -->
 
         <h5></h5>
     </div>
 
 </div>
+

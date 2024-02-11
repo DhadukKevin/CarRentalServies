@@ -1,13 +1,7 @@
 ﻿@using CarRentalServies.BAL;
 @{
-    if (CV.UserID() == 0)
-    {
-        Layout = "~/Views/shared/Home_Page_Layout_Without_Login.cshtml";
-    }
-    else
-    {
+
         Layout = "~/Areas/User/Views/shared/Home_Page_Layout.cshtml";
-    }
 }
 
 

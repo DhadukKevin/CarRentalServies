@@ -2,11 +2,7 @@
 using CarRentalServies.Areas.Admin.Models;
 using CarRentalServies.BAL;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis;
-using Microsoft.Practices.EnterpriseLibrary.Data.Sql;
-using Microsoft.Practices.EnterpriseLibrary.Data;
 using System.Data;
-using System.Data.Common;
 
 namespace CarRentalServies.Areas.Admin.Controllers
 {
@@ -106,7 +102,7 @@ namespace CarRentalServies.Areas.Admin.Controllers
         }
         #endregion
 
-        #region Car Delete
+        #region User Delete
         public IActionResult UserDelete(int UserID)
         {
             bool isSuccess = adminDal.UserDelete(UserID);

@@ -33,82 +33,86 @@
 </head>
 <body>
     <!-- ======= Header ======= -->
-    <header id="header" class="header fixed-top d-flex align-items-center">
+    <header id="header" class="header fixed-top d-flex align-items-center" style="background-color:black">
 
         <div class="d-flex align-items-center justify-content-between">
             <a class="logo d-flex align-items-center">
                 <img src="~/img/logo.png" alt="">
-                <span class="d-none d-lg-block">CarRental</span>
+                <span class="d-none d-lg-block" style="color:white">CarRental</span>
             </a>
         </div><!-- End Logo -->
 
-        <div class="search-bar">
-            <form class="search-form d-flex align-items-center" method="POST" action="#">
-                <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-                <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-            </form>
-        </div><!-- End Search Bar -->
 
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">
+                @{
+                    if (CV.UserID() == 0)
+                    {
+                        <a asp-area="SEC_login" asp-controller="SEC_Login" asp-action="SEC_LoginPage" class="btn btn-success w-100" style="margin-right:30px;">
+                            Login
+                        </a>
+                    }
+                    else
+                    {
+                        <li class="nav-item dropdown pe-3">
 
+                            <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                                <img src="@CV.ProfilePhoto()" alt="Profile" class="rounded-circle">
+                                <span class="d-none d-md-block dropdown-toggle ps-2" style="color:white">@CV.Name()</span>
+                            </a><!-- End Profile Iamge Icon -->
 
-                <li class="nav-item dropdown pe-3">
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                                <li class="dropdown-header">
+                                    <h6>@CV.Name()</h6>
+                                    <span>Web Designer</span>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
 
-                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                        <img src="@CV.ProfilePhoto()" alt="Profile" class="rounded-circle">
-                        <span class="d-none d-md-block dropdown-toggle ps-2">@CV.Name()</span>
-                    </a><!-- End Profile Iamge Icon -->
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center" asp-area="User" asp-controller="User" asp-action="Profile">
+                                        <i class="bi bi-person"></i>
+                                        <span>My Profile</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
 
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-                        <li class="dropdown-header">
-                            <h6>@CV.Name()</h6>
-                            <span>Web Designer</span>
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center" asp-area="User" asp-controller="User" asp-action="BookingList">
+                                        <i class="bi bi-gear"></i>
+                                        <span>Booking History</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                                        <i class="bi bi-question-circle"></i>
+                                        <span>Need Help?</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center" asp-controller="Home" asp-action="Index">
+                                        <i class="bi bi-box-arrow-right"></i>
+                                        <span>Sign Out</span>
+                                    </a>
+                                </li>
+
+                            </ul><!-- End Profile Dropdown Items -->
                         </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
 
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" asp-area="User" asp-controller="User" asp-action="Profile">
-                                <i class="bi bi-person"></i>
-                                <span>My Profile</span>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" asp-area="User" asp-controller="User" asp-action="BookingList">
-                                <i class="bi bi-gear"></i>
-                                <span>Booking History</span>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                                <i class="bi bi-question-circle"></i>
-                                <span>Need Help?</span>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" asp-controller="Home" asp-action="Index">
-                                <i class="bi bi-box-arrow-right"></i>
-                                <span>Sign Out</span>
-                            </a>
-                        </li>
-
-                    </ul><!-- End Profile Dropdown Items -->
-                </li><!-- End Profile Nav -->
-
+                        <!-- End Profile Nav -->
+                    }
+                }
             </ul>
         </nav><!-- End Icons Navigation -->
 

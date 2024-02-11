@@ -3,19 +3,14 @@
 @model DataTable
 
 @{
-    if (CV.UserID() == 0)
-    {
-        Layout = "~/Views/shared/Home_Page_Layout_Without_Login.cshtml";
-    }
-    else
-    {
-        Layout = "~/Areas/User/Views/shared/Home_Page_Layout.cshtml";
-    }
-   
+    Layout = "~/Areas/User/Views/shared/Home_Page_Layout.cshtml";
+    DateTime FromDate;
+    DateTime ToDate;
+    
 }
 
 
-<a asp-area="User" asp-controller="User" asp-action="CarList" asp-route-CityID="@Model.Rows[0]["CityID"]">
+<a asp-area="User" asp-controller="User" asp-action="CarList" asp-route-CityID="@Model.Rows[0]["CityID"]" asp-route-FromDate="@DateTime.Now" asp-route-ToDate="@DateTime.Now">
     <i class="bi bi-chevron-left" style=" color:black;"><span style="font-size:15px;">   Back</span></i>
 </a>
 <section class="section" style="margin-top:20px;">

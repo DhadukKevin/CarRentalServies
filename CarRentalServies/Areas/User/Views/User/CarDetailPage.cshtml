@@ -2,16 +2,9 @@
 @using CarRentalServies.BAL;
 @model CarRentalServies.Areas.User.Models.CarModel
 @{
-    Console.WriteLine("Deatil page: "+CV.UserID());
-    if (CV.UserID() == 0)
-    {
-        Layout = "~/Views/shared/Home_Page_Layout_Without_Login.cshtml";
-    }
-    else
-    {
-        Layout = "~/Areas/User/Views/shared/Home_Page_Layout.cshtml";
-    }
-   
+    Layout = "~/Areas/User/Views/shared/Home_Page_Layout.cshtml";
+
+
 
     DateTime FromDate = Convert.ToDateTime(TempData["FromDate"]);
     DateTime ToDate = Convert.ToDateTime(TempData["ToDate"]);
@@ -31,7 +24,7 @@
     decimal? price = hour * Model.Price;
 }
 
-<a asp-area="User" asp-controller="User" asp-action="CarList" asp-route-CityID="@Model.CityID">
+<a asp-area="User" asp-controller="User" asp-action="CarList" asp-route-CityID="@Model.CityID" asp-route-FromDate="@FromDate" asp-route-ToDate="@ToDate">
     <h6>Back</h6>
 </a>
 <div class="row">

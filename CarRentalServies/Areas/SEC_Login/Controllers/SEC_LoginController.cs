@@ -78,7 +78,7 @@ namespace CarRentalServies.Areas.SEC_Login.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Home", "User", new { area = "User" });
+                        return RedirectToAction("Index", "Home");
                     }
                 }
             }

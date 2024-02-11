@@ -1,19 +1,13 @@
 ﻿@using CarRentalServies.BAL;
 @using CarRentalServies.Areas.User.Models
 @{
-    Console.WriteLine("List page: " + CV.UserID());
-    if (CV.UserID() == 0)
-    {
-        Console.WriteLine("List page: Logn null");
-        Layout = "~/Areas/User/Views/shared/_User_Layout_Without_Login.cshtml";
-    }
-    else
-    {
-        Console.WriteLine("List page: login");
-        Layout = "~/Areas/User/Views/shared/_User_Layout.cshtml";
-    }
-    
+
+    Layout = "~/Areas/User/Views/shared/_User_Layout.cshtml";
+
+
     CarModel carModel = new CarModel();
+    carModel.FromDate = Convert.ToDateTime(TempData["FromDate"]);
+    carModel.ToDate = Convert.ToDateTime(TempData["ToDate"]);
     CarFilterModel filterModel = new CarFilterModel();
     int CityID = Convert.ToInt32(TempData["CityID"]);
 }
@@ -33,26 +27,46 @@
 </div><!-- End Page Title -->
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Filter</h5>
-
-        <!-- No Labels Form -->
+       <br />
+        @*<!-- No Labels Form -->
         <form class="row g-3" method="post" asp-controller="User" asp-action="CarByCityIDFromDateToDate" asp-area="User" asp-route-CityID="@CityID">
             <div class="col-md-4">
                 <label for="birthdaytime">From (date and time):</label>
-                <input type="datetime-local" id="date_picker" name="FromDate" min="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" asp-for="@carModel.FromDate">
-                @*<input type="text" class="form-control" placeholder="Car Name" asp-for="@filterModel.CarName">*@
+                <input type="datetime-local" id="date_picker" name="FromDate" min="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" asp-for="@carModel.FromDate" >
+                
             </div>
+            
             <div class="col-md-4">
                 <label for="birthdaytime">To (date and time):</label>
                 <input type="datetime-local" id="date_picker" name="ToDate" min="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" asp-for="@carModel.ToDate">
-                @*<input type="text" class="form-control" placeholder="Car Name" asp-for="@filterModel.CarName">*@
+                
             </div>
 
             <div class="col-md-4">
                 <button type="submit" class="btn btn-primary">Submit</button>
                 <button type="reset" class="btn btn-secondary">Reset</button>
             </div>
-        </form><!-- End No Labels Form -->
+        </form><!-- End No Labels Form -->*@
+
+        <form method="post" asp-controller="User" asp-action="CarByCityIDFromDateToDate" asp-area="User" asp-route-CityID="@CityID">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center row ">
+                    <div class="col-md-4 product_status">
+                        <label for="ecommerce-product-name" class="fw-bold mb-1 ms-1">From Date</label>
+                        <input type="datetime-local" placeholder="FromDate" asp-for="@carModel.FromDate" class="form-control" id="ecommerce-product-name" name="FROMDATE" />
+                    </div>
+                    <div class="col-md-4 product_category">
+                        <label for="ecommerce-product-name" class="fw-bold mb-1 ms-1">To Date</label>
+                        <input type="datetime-local" placeholder="ToDate" asp-for="@carModel.ToDate" class="form-control" id="ecommerce-product-name" name="TODATE" />
+                    </div>
+                    <div class="col-md-4 product_stock mt-4">
+                        <button type="submit" class="btn btn-primary waves-effect waves-light text-white" >
+                            Get Car
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
 
     </div>
 
@@ -71,8 +85,8 @@
         {
             <div class="col-lg-4">
                 <div class="row-lg-4">
-                    <a asp-area="User" asp-controller="User" asp-action="CarDetailPage" asp-route-CarID="@dataRow["CarID"]">
-                        <div class="card">
+                    <a asp-area="User" asp-controller="User" asp-action="CarDetailPage" asp-route-CarID="@dataRow["CarID"]" asp-route-FromDate="@carModel.FromDate" asp-route-ToDate="@carModel.ToDate">
+                        <div class="card" style="border-radius:20px; overflow: hidden;">
 
                             <img class="card-img-top" src="@Url.Content(dataRow["CarPhoto"].ToString())" alt="Card image cap" style="width:auto; height:200px" />
 

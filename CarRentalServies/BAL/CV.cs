@@ -3,10 +3,10 @@
     public class CV
     {
         private static IHttpContextAccessor _HttpContextAccessor;
-        static CV()
-        {
-            _HttpContextAccessor = new HttpContextAccessor();
-        }
+            static CV()
+            {
+                _HttpContextAccessor = new HttpContextAccessor();
+            }
 
         public static int? UserID()
         {

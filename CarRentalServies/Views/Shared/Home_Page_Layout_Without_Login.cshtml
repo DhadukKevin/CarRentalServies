@@ -42,7 +42,6 @@
             </a>
         </div><!-- End Logo -->
 
-
         <nav class="header-nav ms-auto">
             <a asp-area="SEC_login" asp-controller="SEC_Login" asp-action="SEC_LoginPage" class="btn btn-success w-100" style="margin-right:30px;">
                 Login
@@ -52,13 +51,13 @@
     </header><!-- End Header -->
     <div class="container">
 
-        <main id="main1" class="main1" style="margin-top:50px;">
+        <main id="main" class="main">
             @RenderBody()
         </main>
     </div>
 
     <!-- ======= Footer ======= -->
-    <footer id="footer1" class="footer1">
+    <footer id="footer" class="footer">
         <div class="copyright">
             &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
         </div>
@@ -70,6 +69,9 @@
             Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
         </div>
     </footer><!-- End Footer -->
+            
+       
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
