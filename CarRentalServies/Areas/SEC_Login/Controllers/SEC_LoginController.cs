@@ -22,10 +22,14 @@ namespace CarRentalServies.Areas.SEC_Login.Controllers
         }
         #endregion
 
+        #region Login Page
         public IActionResult SEC_LoginPage()
         {
             return View();
         }
+        #endregion
+
+        #region Login Method
         [HttpPost]
         public IActionResult Login(SEC_LoginModel modelSEC_User)
         {
@@ -84,19 +88,25 @@ namespace CarRentalServies.Areas.SEC_Login.Controllers
             }
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region User Regestration
         public IActionResult SEC_Registration()
         {
             ViewBag.CityList = loginDal.CityDropDown();
             return View();
         }
+        #endregion
 
+        #region LogOut
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
+        #endregion
 
+        #region User Save
         public IActionResult Save(SEC_LoginModel loginSEC_Login)
         {
             string connectionStr = this.Configuration.GetConnectionString("myConnectionString");
@@ -118,5 +128,6 @@ namespace CarRentalServies.Areas.SEC_Login.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+        #endregion
     }
 }

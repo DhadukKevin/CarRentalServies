@@ -39,6 +39,7 @@ namespace CarRentalServies.Areas.User.DAL
         }
         #endregion
 
+        #region Mail
         [HttpPost]
         public bool SendEmail(string receiver)
         {
@@ -76,7 +77,9 @@ namespace CarRentalServies.Areas.User.DAL
             }
             return false;
         }
+        #endregion
 
+        #region CityName
         public string CityName(int cityID)
         {
             SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
@@ -94,6 +97,7 @@ namespace CarRentalServies.Areas.User.DAL
             }
             return Cityname;
         }
+        #endregion
 
         #region CarTypeDropDown
         public List<CarTypeDropDownModel> CarTypeDropDown()

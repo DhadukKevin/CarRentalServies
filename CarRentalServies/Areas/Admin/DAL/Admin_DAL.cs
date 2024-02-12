@@ -175,7 +175,7 @@ namespace CarRentalServies.Areas.Admin.DAL
         }
         #endregion
 
-
+        #region Car Count
         public int CarCount()
         {
             int CarCount=0;
@@ -192,7 +192,9 @@ namespace CarRentalServies.Areas.Admin.DAL
             }
             return CarCount;
         }
+        #endregion
 
+        #region City Count
         public int CityCount()
         {
             int CityCount = 0;
@@ -209,7 +211,9 @@ namespace CarRentalServies.Areas.Admin.DAL
             }
             return CityCount;
         }
+        #endregion
 
+        #region User Count
         public int UserCount()
         {
             int UserCount = 0;
@@ -226,7 +230,9 @@ namespace CarRentalServies.Areas.Admin.DAL
             }
             return UserCount;
         }
+        #endregion
 
+        #region Count Table
         public DataTable CountTable()
         {
             SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
@@ -238,5 +244,6 @@ namespace CarRentalServies.Areas.Admin.DAL
             }
             return dataTable;
         }
+        #endregion
     }
 }

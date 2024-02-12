@@ -8,7 +8,7 @@ namespace CarRentalServies.Areas.User.DAL
 {
     public class User_DALBase : DALHelper
     {
-
+        #region Car By City
         public DataTable CarFilterByCity(int? cityID)
         {
             try
@@ -43,8 +43,9 @@ namespace CarRentalServies.Areas.User.DAL
                 return null;
             }
         }
+        #endregion
 
-        #region Method : Car By ID
+        #region Car By ID
         public CarModel CarByID(int? CarID)
         {
             CarModel modelCar = new CarModel();
@@ -103,7 +104,7 @@ namespace CarRentalServies.Areas.User.DAL
         }
         #endregion
 
-        #region Method : Car By CityID, FromDate, ToDate
+        #region Car By CityID, FromDate, ToDate
         public DataTable CarByCityIDFromDateToDate(int CityID,DateTime FromDate,DateTime ToDate)
         {
             CarModel modelCar = new CarModel();
@@ -129,6 +130,7 @@ namespace CarRentalServies.Areas.User.DAL
         }
         #endregion
 
+        #region Booking
         public bool BookingSave(int CarID,int UserID,string FromDate, string ToDate)
         {
             DateTime From = Convert.ToDateTime(FromDate);
@@ -143,7 +145,9 @@ namespace CarRentalServies.Areas.User.DAL
             bool isSuccess = Convert.ToBoolean(sqlDatabase.ExecuteNonQuery(dbCommand));
             return isSuccess;
         }
+        #endregion
 
+        #region BookingList
         public DataTable BookinghList()
         {
             SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
@@ -155,7 +159,9 @@ namespace CarRentalServies.Areas.User.DAL
             }
             return dataTable;
         }
-        //01-01-0001 00:00:00
+        #endregion
+
+        #region Update From and To Date in Car
         public bool UpdateFromAndToDateInCar(int CarID,string? FromDate,string? ToDate)
         {
             DateTime? From = Convert.ToDateTime(FromDate);
@@ -182,7 +188,9 @@ namespace CarRentalServies.Areas.User.DAL
             bool isSuccess = Convert.ToBoolean(sqlDatabase.ExecuteNonQuery(dbCommand));
             return isSuccess;
         }
+        #endregion
 
+        #region User Filter
         public DataTable User_Filter(CarFilterModelUser modelCarUser)
         {
             try
@@ -208,5 +216,6 @@ namespace CarRentalServies.Areas.User.DAL
                 return null;
             }
         }
+        #endregion
     }
 }

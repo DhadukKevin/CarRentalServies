@@ -19,6 +19,13 @@ namespace CarRentalServies.Areas.User.Controllers
         {
             return View();
         }
+        public IActionResult Home()
+        {
+            ViewBag.CityList = userDAL.CityDropDown();
+            return View();
+        }
+
+        #region Car List
         public IActionResult CarList(int? cityID,DateTime FromDate,DateTime ToDate)
         {
             TempData["FromDate"] = FromDate.ToString("MM/dd/yyyy HH:mm");
@@ -29,13 +36,9 @@ namespace CarRentalServies.Areas.User.Controllers
            
             return View(dataTable);
         }
-        public IActionResult Home()
-        {
-            ViewBag.CityList = userDAL.CityDropDown();
-            return View();
-        }
+        #endregion
 
-        
+        #region Car Detail Page
         public IActionResult CarDetailPage(int CarID, string FromDate, string ToDate)
         {
             TempData["FromDate"] = FromDate;
@@ -44,7 +47,9 @@ namespace CarRentalServies.Areas.User.Controllers
             model = userDAL.CarByID(CarID);
             return View("CarDetailPage", model);
         }
+        #endregion
 
+        #region Car By CityID From and To Date
         public IActionResult CarByCityIDFromDateToDate(int CityID, DateTime FromDate, DateTime ToDate)
         {
             TempData["FromDate"] = FromDate;
@@ -53,9 +58,11 @@ namespace CarRentalServies.Areas.User.Controllers
             DataTable dataTable = userDAL.CarByCityIDFromDateToDate(CityID, FromDate, ToDate);
             return View("CarList", dataTable);
         }
+        #endregion
+
+        #region Booking
 
         [CheckAccess]
-        #region CarSave
         public IActionResult BookinSave(int CarID, int UserID, string FromDate, string ToDate,string Email)
         {
             if (userDAL.BookingSave(CarID, UserID, FromDate, ToDate))
@@ -71,12 +78,15 @@ namespace CarRentalServies.Areas.User.Controllers
         }
         #endregion
 
+        #region Booking List
         public IActionResult BookingList()
         {
             DataTable dataTable = userDAL.BookinghList();
             return View("BookingList", dataTable);
         }
+        #endregion
 
+        #region Update From and To date in car
         public IActionResult UpdateCarFromAndToDate(int CarID, string? FromDate, string? ToDate)
         {
 
@@ -88,25 +98,29 @@ namespace CarRentalServies.Areas.User.Controllers
 
             return RedirectToAction("BookingList");
         }
+        #endregion
 
+        #region profile
         public IActionResult Profile()
         {
             return View();
         }
+        #endregion
 
+        #region Get Car Page
         public IActionResult GetCarPage(string CityName,int CityID)
         {
             TempData["CityID"] = CityID;
             TempData["CityName"] = userDAL.CityName(CityID);
             return View();
         }
+        #endregion
 
-        [HttpPost]
-        public IActionResult Filter(CarFilterModelUser modelCarUser)
-        {
-            DataTable dt = userDAL.User_Filter(modelCarUser);
-            return View("CarList",dt);
-        }
-
+        //[HttpPost]
+        //public IActionResult Filter(CarFilterModelUser modelCarUser)
+        //{
+        //    DataTable dt = userDAL.User_Filter(modelCarUser);
+        //    return View("CarList",dt);
+        //}
     }
 }
