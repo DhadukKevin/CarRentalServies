@@ -44,6 +44,17 @@ namespace CarRentalServies.Areas.User.Models
         public int? StateID { get; set; }
     }
 
+    public class CarFilterModelUser
+    {
+        public string? CarName { get; set; }
+        public int? TransmissionID { get; set; }
+        public int? FuelID { get; set; }
+        public int? CarTypeID { get; set; }
+        public int? SeatNumber { get; set; }
+        public int? CityID { get; set; }
+        
+    }
+
     public class CarTypeDropDownModel
     {
         public int CarTypeID { get; set; }

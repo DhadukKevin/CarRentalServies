@@ -6,7 +6,7 @@
 }
 
 <div class="card" style="position: relative; text-align: center; color: white;">
-    <img src="~/img/bg1.jpg" style="height:700px; filter: blur(2px); -webkit-filter: blur(2px); background-color: rgba(0,0,0, 0.9); box-shadow:rgba(0,0,0,0,0.3)">
+    <img src="~/img/bg2.jpg" style="height:800px; filter: blur(2px); -webkit-filter: blur(2px); background-color: rgba(0,0,0, 0.9); box-shadow:rgba(0,0,0,0,0.3)">
     <div class="centered" style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); font-size:50px; color:rgb(69, 69, 71); font-weight:bold">
         Rent a car in @TempData["CityName"]
     </div>
@@ -15,31 +15,8 @@
     </div>
     <div class="card" style="position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%);">
 
-
-
-        @*<form class="row g-4" method="post" asp-controller="User" asp-action="CarByCityIDFromDateToDate" asp-area="User" asp-route-CityID="@Convert.ToInt32(TempData["CityID"])">
-        <div class="col-md-4">
-        <label for="birthdaytime">From (date and time):</label>
-        <input type="datetime-local" id="date_picker" name="FromDate" min="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" asp-for="@carModel.FromDate">
-
-        </div>
-
-        <div class="col-md-4">
-        <label for="birthdaytime">To (date and time):</label>
-        <input type="datetime-local" id="date_picker" name="ToDate" min="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" asp-for="@carModel.ToDate">
-
-        </div>
-
-        <div class="col-md-4">
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <button type="reset" class="btn btn-secondary">Reset</button>
-        </div>
-        </form>*@
-
-
-
         <form method="post" asp-controller="User" asp-action="CarByCityIDFromDateToDate" asp-area="User" asp-route-CityID="@CityID">
-            <div class="card-header">
+            <div class="card-header" style="background-color: #edf2ff">
                 <div class="d-flex justify-content-between align-items-center row ">
                     <div class="col-md-4 product_status">
                         <label for="ecommerce-product-name" class="fw-bold mb-1 ms-1">From Date</label>
@@ -50,15 +27,14 @@
                         <input type="datetime-local" placeholder="ToDate" class="form-control" id="ecommerce-product-name" name="TODATE" />
                     </div>
                     <div class="col-md-4 product_stock mt-4">
-                        <button type="submit" class="btn btn-primary waves-effect waves-light text-white">
+                        <button type="submit" class="btn btn-success waves-effect waves-light text-white">
                             Get Car
                         </button>
                     </div>
                 </div>
             </div>
         </form>
-
-
+        
 
 
     </div>

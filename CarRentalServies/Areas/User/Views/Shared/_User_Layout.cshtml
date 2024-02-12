@@ -1,4 +1,16 @@
-﻿@using CarRentalServies.BAL;
+﻿@using CarRentalServies.Areas.User.DAL;
+@using CarRentalServies.Areas.User.Models;
+@using CarRentalServies.BAL;
+@{
+    CarFilterModelUser filterModel = new CarFilterModelUser();
+    User_DAL userDAL = new User_DAL();
+    ViewBag.CityList = userDAL.CityDropDown();
+    ViewBag.TransmissionList = userDAL.TransmissionDropDown();
+    ViewBag.FuelList = userDAL.FuelDropDown();
+    ViewBag.CarTypeList = userDAL.CarTypeDropDown();
+    filterModel.CityID = Convert.ToInt32(TempData["CityID"]);
+    Console.WriteLine("CityID = " + filterModel.CityID);
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,7 +79,7 @@
                 @{
                     if (CV.UserID() == 0)
                     {
-                        <a asp-area="SEC_login" asp-controller="SEC_Login" asp-action="SEC_LoginPage" style="margin-right:30px; color:white; font-weight:bold" >
+                        <a asp-area="SEC_login" asp-controller="SEC_Login" asp-action="SEC_LoginPage" style="margin-right:30px; color:white; font-weight:bold">
                             Login/SignUp
                         </a>
                     }
@@ -136,7 +148,6 @@
         </nav><!-- End Icons Navigation -->
 
     </header><!-- End Header -->
-
     <!-- ======= Sidebar ======= -->
     <aside id="sidebar" class="sidebar">
 
@@ -144,7 +155,52 @@
 
             <li class="nav-item">
                 <div class="details f-1 as-fe">
-                    <h5>Filter Aavse/</h5>
+                    @*<form method="post" asp-controller="User" asp-action="Filter" asp-area="User">
+                        @{filterModel.CarName = "Audi";}
+                        <div class="col-md-12" >
+                            <p style="color:black; font-weight:600">
+                                Include specific cars
+                            </p>
+                            <p style="font-size:11px; margin-top:-20px">
+                                Any specific model in mind? Find it here. We will include them to search
+                            </p>
+                            <input type="text" class="form-control" placeholder="Car Name" asp-for="@filterModel.CarName">
+                        </div>
+                        <hr class="sidebar-divider">
+                        <div class="col-md-12" style="margin-top:-10px">
+                            <p style="color:black; font-weight:600">Transmission</p>
+                            <select class="form-select" asp-for="@filterModel.TransmissionID" asp-items="@(new SelectList(ViewBag.TransmissionList,"TransmissionID","TransmissionName"))">
+                                <option>Select Transmission</option> 
+                            </select>
+                        </div>
+                        <hr class="sidebar-divider">
+                        <div class="col-md-12" style="margin-top:-10px">
+                            <p style="color:black; font-weight:600">Seats</p>
+                            <select class="form-select" asp-for="@filterModel.SeatNumber">
+                                <option>Seats</option>
+                                <option value="5">4/5</option>
+                                <option value="7">6/7</option>
+                            </select>
+                        </div>
+                        <hr class="sidebar-divider">
+                        <div class="col-md-12" style="margin-top:-10px">
+                            <p style="color:black; font-weight:600">Car Type</p>
+                            <select class="form-select" asp-for="@filterModel.CarTypeID" asp-items="@(new SelectList(ViewBag.CarTypeList,"CarTypeID","CarTypeName"))">
+                                <option>Select Cartype</option>
+                            </select>
+                        </div>
+                        <hr class="sidebar-divider">
+                        <div class="col-md-12" style="margin-top:-10px">
+                            <p style="color:black; font-weight:600">Fuel Type</p>
+                            <select class="form-select" asp-for="@filterModel.FuelID" asp-items="@(new SelectList(ViewBag.FuelList,"FuelID","FuelTypeName"))">
+                                <option>Select Fuel Type</option>
+                            </select>
+                        </div>
+                        <hr class="sidebar-divider">
+                        <div class="d-grid gap-2 mt-3" style="margin-top:-10px">
+                            <button class="btn btn-success" type="submit">Search Car</button>
+                        </div>
+                    </form>*@
                 </div>
             </li>
         </ul>
@@ -152,7 +208,7 @@
     </aside><!-- End Sidebar-->
 
     <div class="container">
-        
+
         <main id="main" class="main">
             @RenderBody()
         </main>

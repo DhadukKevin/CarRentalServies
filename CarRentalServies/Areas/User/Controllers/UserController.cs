@@ -1,4 +1,5 @@
-﻿using CarRentalServies.Areas.User.DAL;
+﻿using CarRentalServies.Areas.Admin.DAL;
+using CarRentalServies.Areas.User.DAL;
 using CarRentalServies.Areas.User.Models;
 using CarRentalServies.BAL;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,7 @@ namespace CarRentalServies.Areas.User.Controllers
             TempData["CityID"] = cityID;
             DataTable dataTable = userDAL.CarFilterByCity(cityID);
             TempData["CityID"] = cityID;
+           
             return View(dataTable);
         }
         public IActionResult Home()
@@ -33,10 +35,11 @@ namespace CarRentalServies.Areas.User.Controllers
             return View();
         }
 
-        public IActionResult CarDetailPage(int CarID, DateTime FromDate, DateTime ToDate)
+        
+        public IActionResult CarDetailPage(int CarID, string FromDate, string ToDate)
         {
-            TempData["FromDate"] = FromDate.ToString("MM/dd/yyyy HH:mm");
-            TempData["ToDate"] = ToDate.ToString("MM/dd/yyyy HH:mm");
+            TempData["FromDate"] = FromDate;
+            TempData["ToDate"] = ToDate;
             CarModel model = new CarModel();
             model = userDAL.CarByID(CarID);
             return View("CarDetailPage", model);
@@ -98,10 +101,11 @@ namespace CarRentalServies.Areas.User.Controllers
             return View();
         }
 
-        
-        public ActionResult GetAddressAction()
+        [HttpPost]
+        public IActionResult Filter(CarFilterModelUser modelCarUser)
         {
-            return PartialView("_dates");
+            DataTable dt = userDAL.User_Filter(modelCarUser);
+            return View("CarList",dt);
         }
 
     }

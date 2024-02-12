@@ -94,5 +94,92 @@ namespace CarRentalServies.Areas.User.DAL
             }
             return Cityname;
         }
+
+        #region CarTypeDropDown
+        public List<CarTypeDropDownModel> CarTypeDropDown()
+        {
+            try
+            {
+                SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
+                DbCommand dbCommand = sqlDatabase.GetStoredProcCommand("PR_CarType_ComboBox");
+                DataTable dataTable = new DataTable();
+                using (IDataReader dataReader = sqlDatabase.ExecuteReader(dbCommand))
+                {
+                    dataTable.Load(dataReader);
+                }
+                List<CarTypeDropDownModel> listOfCategories = new List<CarTypeDropDownModel>();
+                foreach (DataRow dataRow in dataTable.Rows)
+                {
+                    CarTypeDropDownModel carTypeDropDownModel = new CarTypeDropDownModel();
+                    carTypeDropDownModel.CarTypeID = Convert.ToInt32(dataRow["CarTypeID"]);
+                    carTypeDropDownModel.CarTypeName = dataRow["CarTypeName"].ToString();
+                    listOfCategories.Add(carTypeDropDownModel);
+                }
+                return listOfCategories;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        #endregion
+
+        #region Fuel DropDown
+        public List<FuelTypeDropDownModel> FuelDropDown()
+        {
+            try
+            {
+                SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
+                DbCommand dbCommand = sqlDatabase.GetStoredProcCommand("PR_FuelType_ComboBox");
+                DataTable dataTable = new DataTable();
+                using (IDataReader dataReader = sqlDatabase.ExecuteReader(dbCommand))
+                {
+                    dataTable.Load(dataReader);
+                }
+                List<FuelTypeDropDownModel> listOfCategories = new List<FuelTypeDropDownModel>();
+                foreach (DataRow dataRow in dataTable.Rows)
+                {
+                    FuelTypeDropDownModel fuelDropDownModel = new FuelTypeDropDownModel();
+                    fuelDropDownModel.FuelID = Convert.ToInt32(dataRow["FuelID"]);
+                    fuelDropDownModel.FuelTypeName = dataRow["FuelTypeName"].ToString();
+                    listOfCategories.Add(fuelDropDownModel);
+                }
+                return listOfCategories;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        #endregion
+
+        #region Transmissin DropDown
+        public List<TransmissionDropDownModel> TransmissionDropDown()
+        {
+            try
+            {
+                SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
+                DbCommand dbCommand = sqlDatabase.GetStoredProcCommand("PR_Transmission_ComboBox");
+                DataTable dataTable = new DataTable();
+                using (IDataReader dataReader = sqlDatabase.ExecuteReader(dbCommand))
+                {
+                    dataTable.Load(dataReader);
+                }
+                List<TransmissionDropDownModel> listOfCategories = new List<TransmissionDropDownModel>();
+                foreach (DataRow dataRow in dataTable.Rows)
+                {
+                    TransmissionDropDownModel transmissionDropDownModel = new TransmissionDropDownModel();
+                    transmissionDropDownModel.TransmissionID = Convert.ToInt32(dataRow["TransmissionID"]);
+                    transmissionDropDownModel.TransmissionName = dataRow["TransmissionName"].ToString();
+                    listOfCategories.Add(transmissionDropDownModel);
+                }
+                return listOfCategories;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        #endregion
     }
 }

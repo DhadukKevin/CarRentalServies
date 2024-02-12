@@ -19,6 +19,10 @@ namespace CarRentalServies.Controllers
             ViewBag.CityList = userDAL.CityDropDown();
             return View();
         }
+        public IActionResult Temp()
+        {
+            return View();
+        }
 
         public IActionResult Privacy()
         {

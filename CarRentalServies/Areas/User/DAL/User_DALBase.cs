@@ -182,5 +182,31 @@ namespace CarRentalServies.Areas.User.DAL
             bool isSuccess = Convert.ToBoolean(sqlDatabase.ExecuteNonQuery(dbCommand));
             return isSuccess;
         }
+
+        public DataTable User_Filter(CarFilterModelUser modelCarUser)
+        {
+            try
+            {
+                SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
+                DbCommand dbCommand = sqlDatabase.GetStoredProcCommand("PR_MST_Car_Filter_User");
+                sqlDatabase.AddInParameter(dbCommand, "@CarName", DbType.String, modelCarUser.CarName);
+                sqlDatabase.AddInParameter(dbCommand, "@TransmissionID", DbType.Int32, modelCarUser.TransmissionID);
+                sqlDatabase.AddInParameter(dbCommand, "@FuelID", DbType.Int32, modelCarUser.FuelID);
+                sqlDatabase.AddInParameter(dbCommand, "@CarTypeID", DbType.Int32, modelCarUser.CarTypeID);
+                sqlDatabase.AddInParameter(dbCommand, "@SeatNumber", DbType.Int32, modelCarUser.SeatNumber);
+                sqlDatabase.AddInParameter(dbCommand, "@CityID", DbType.Int32, modelCarUser.CityID);
+                DataTable dataTable = new DataTable();
+                using (IDataReader dataReader = sqlDatabase.ExecuteReader(dbCommand))
+                {
+                    dataTable.Load(dataReader);
+                }
+
+                return dataTable;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
     }
 }
