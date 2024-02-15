@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Practices.EnterpriseLibrary.Data.Sql;
+﻿using Microsoft.Practices.EnterpriseLibrary.Data.Sql;
 using System.Data.Common;
 using System.Data;
 using CarRentalServies.Areas.User.Models;
@@ -189,7 +188,7 @@ namespace CarRentalServies.Areas.User.DAL
             return isSuccess;
         }
         #endregion
-
+ 
         #region User Filter
         public DataTable User_Filter(CarFilterModelUser modelCarUser)
         {

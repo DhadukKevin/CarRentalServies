@@ -47,7 +47,7 @@ namespace CarRentalServies.Areas.SEC_Login.Controllers
             if (error != null)
             {
                 TempData["Error"] = error;
-                return RedirectToAction("SEC_UserLogin");
+                return RedirectToAction("SEC_LoginPage", "SEC_Login", new { area = "SEC_Login" });
             }
             else
             {
@@ -72,7 +72,7 @@ namespace CarRentalServies.Areas.SEC_Login.Controllers
                 else
                 {
                     TempData["Error"] = "User Name or Password is invalid!";
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("SEC_LoginPage", "SEC_Login", new { area = "SEC_Login" });
                 }
                 if (HttpContext.Session.GetString("Name") != null && HttpContext.Session.GetString("Password") != null)
                 {
@@ -86,7 +86,7 @@ namespace CarRentalServies.Areas.SEC_Login.Controllers
                     }
                 }
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("SEC_LoginPage","SEC_Login", new { area = "SEC_Login"});
         }
         #endregion
 

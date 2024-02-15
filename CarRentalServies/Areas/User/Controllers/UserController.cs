@@ -26,10 +26,10 @@ namespace CarRentalServies.Areas.User.Controllers
         }
 
         #region Car List
-        public IActionResult CarList(int? cityID,DateTime FromDate,DateTime ToDate)
+        public IActionResult CarList(int? cityID,string FromDate,string ToDate)
         {
-            TempData["FromDate"] = FromDate.ToString("MM/dd/yyyy HH:mm");
-            TempData["ToDate"] = ToDate.ToString("MM/dd/yyyy HH:mm");
+            TempData["FromDate"] = FromDate;
+            TempData["ToDate"] = ToDate;
             TempData["CityID"] = cityID;
             DataTable dataTable = userDAL.CarFilterByCity(cityID);
             TempData["CityID"] = cityID;
@@ -50,12 +50,12 @@ namespace CarRentalServies.Areas.User.Controllers
         #endregion
 
         #region Car By CityID From and To Date
-        public IActionResult CarByCityIDFromDateToDate(int CityID, DateTime FromDate, DateTime ToDate)
+        public IActionResult CarByCityIDFromDateToDate(int CityID, string FromDate, string ToDate)
         {
             TempData["FromDate"] = FromDate;
             TempData["ToDate"] = ToDate;
             TempData["CityID"] = CityID;
-            DataTable dataTable = userDAL.CarByCityIDFromDateToDate(CityID, FromDate, ToDate);
+            DataTable dataTable = userDAL.CarByCityIDFromDateToDate(CityID, Convert.ToDateTime(FromDate), Convert.ToDateTime(ToDate));
             return View("CarList", dataTable);
         }
         #endregion
@@ -116,11 +116,11 @@ namespace CarRentalServies.Areas.User.Controllers
         }
         #endregion
 
-        //[HttpPost]
-        //public IActionResult Filter(CarFilterModelUser modelCarUser)
-        //{
-        //    DataTable dt = userDAL.User_Filter(modelCarUser);
-        //    return View("CarList",dt);
-        //}
+        
+        public IActionResult Filter(CarFilterModelUser modelCarFilter)
+        {
+            DataTable dt = userDAL.User_Filter(modelCarFilter);
+            return View("CarList", dt);
+        }
     }
 }

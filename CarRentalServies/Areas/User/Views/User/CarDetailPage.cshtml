@@ -24,7 +24,7 @@
     decimal? price = hour * Model.Price;
 }
 
-<a asp-area="User" asp-controller="User" asp-action="CarList" asp-route-CityID="@Model.CityID" asp-route-FromDate="@FromDate" asp-route-ToDate="@ToDate">
+<a asp-area="User" asp-controller="User" asp-action="CarByCityIDFromDateToDate" asp-route-CityID="@Model.CityID" asp-route-FromDate="@FromDate" asp-route-ToDate="@ToDate">
     <h6>Back</h6>
 </a>
 <div class="row">
@@ -48,6 +48,9 @@
             <div class="card-body">
                 <br />
                 <div class="row" style="display: inline-flex; width:500px;">
+                    <div class="column column-md-6">
+                        <h5 style="font-weight:bolder; font-size:large;">@Model.CarName</h5>
+                    </div>
                     <div class="column column-md-6">
                         <h5 style="font-weight:bolder; font-size:large;">From</h5>
                     </div>
@@ -138,7 +141,7 @@
                 </div>
                 <div class="row">
                     <div class="d-grid gap-2 mt-3">
-                        <a asp-area="User" asp-controller="User" asp-action="BookinSave" asp-route-CarID="@Model.CarID" asp-route-UserID="@CV.UserID()" asp-route-FromDate="@TempData["FromDate"]" asp-route-ToDate="@TempData["ToDate"]" asp-route-Email="@CV.Email()">
+                        <a asp-area="User" asp-controller="User" asp-action="BookinSave" asp-route-CarID="@Model.CarID" asp-route-UserID="@CV.UserID()" asp-route-FromDate="@TempData["FromDate"]" asp-route-ToDate="@TempData["ToDate"]" asp-route-Email="@CV.Email()" onclick="return fun1();">
                             <input type="button" class="btn btn-success" value="Book Car" />
                         </a>
                     </div>
@@ -148,3 +151,17 @@
     </div>
 
 </div>
+
+@section Scripts
+    {
+    <script>
+        function fun1() {
+            if (confirm("Are you sure you want to Book \n @Model.CarName \n From @FromDate.ToString() To @ToDate.ToString()")) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+}

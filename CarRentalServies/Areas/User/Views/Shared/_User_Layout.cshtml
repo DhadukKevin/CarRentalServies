@@ -155,8 +155,8 @@
 
             <li class="nav-item">
                 <div class="details f-1 as-fe">
-                    @*<form method="post" asp-controller="User" asp-action="Filter" asp-area="User">
-                        @{filterModel.CarName = "Audi";}
+                    <form method="post" asp-controller="User" asp-action="Filter" asp-area="User">
+                       
                         <div class="col-md-12" >
                             <p style="color:black; font-weight:600">
                                 Include specific cars
@@ -164,19 +164,19 @@
                             <p style="font-size:11px; margin-top:-20px">
                                 Any specific model in mind? Find it here. We will include them to search
                             </p>
-                            <input type="text" class="form-control" placeholder="Car Name" asp-for="@filterModel.CarName">
+                            <input type="text" class="form-control" placeholder="Car Name" name="CarName">
                         </div>
                         <hr class="sidebar-divider">
                         <div class="col-md-12" style="margin-top:-10px">
                             <p style="color:black; font-weight:600">Transmission</p>
-                            <select class="form-select" asp-for="@filterModel.TransmissionID" asp-items="@(new SelectList(ViewBag.TransmissionList,"TransmissionID","TransmissionName"))">
+                            <select class="form-select" name="TransmissionID" asp-items="@(new SelectList(ViewBag.TransmissionList,"TransmissionID","TransmissionName"))">
                                 <option>Select Transmission</option> 
                             </select>
                         </div>
                         <hr class="sidebar-divider">
                         <div class="col-md-12" style="margin-top:-10px">
                             <p style="color:black; font-weight:600">Seats</p>
-                            <select class="form-select" asp-for="@filterModel.SeatNumber">
+                            <select class="form-select" name="SeatNumber">
                                 <option>Seats</option>
                                 <option value="5">4/5</option>
                                 <option value="7">6/7</option>
@@ -185,14 +185,14 @@
                         <hr class="sidebar-divider">
                         <div class="col-md-12" style="margin-top:-10px">
                             <p style="color:black; font-weight:600">Car Type</p>
-                            <select class="form-select" asp-for="@filterModel.CarTypeID" asp-items="@(new SelectList(ViewBag.CarTypeList,"CarTypeID","CarTypeName"))">
+                            <select class="form-select" name="CarTypeID" asp-items="@(new SelectList(ViewBag.CarTypeList,"CarTypeID","CarTypeName"))">
                                 <option>Select Cartype</option>
                             </select>
                         </div>
                         <hr class="sidebar-divider">
                         <div class="col-md-12" style="margin-top:-10px">
                             <p style="color:black; font-weight:600">Fuel Type</p>
-                            <select class="form-select" asp-for="@filterModel.FuelID" asp-items="@(new SelectList(ViewBag.FuelList,"FuelID","FuelTypeName"))">
+                            <select class="form-select" name="FuelID" asp-items="@(new SelectList(ViewBag.FuelList,"FuelID","FuelTypeName"))">
                                 <option>Select Fuel Type</option>
                             </select>
                         </div>
@@ -200,7 +200,7 @@
                         <div class="d-grid gap-2 mt-3" style="margin-top:-10px">
                             <button class="btn btn-success" type="submit">Search Car</button>
                         </div>
-                    </form>*@
+                    </form>
                 </div>
             </li>
         </ul>
