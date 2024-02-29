@@ -3,9 +3,10 @@ using CarRentalServies.Areas.User.DAL;
 using CarRentalServies.Areas.User.Models;
 using CarRentalServies.BAL;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Practices.EnterpriseLibrary.Data.Sql;
 using System.Data;
-
-
+using System.Net.Mail;
+using System.Net;
 
 namespace CarRentalServies.Areas.User.Controllers
 {
@@ -43,9 +44,15 @@ namespace CarRentalServies.Areas.User.Controllers
         {
             TempData["FromDate"] = FromDate;
             TempData["ToDate"] = ToDate;
-            CarModel model = new CarModel();
-            model = userDAL.CarByID(CarID);
-            return View("CarDetailPage", model);
+            CarModel modelCar = new CarModel();
+            DataTable dt = new DataTable();
+            var viewModel = new MyViewModel
+            {
+                modelCar = userDAL.CarByID(CarID),
+                dt = userDAL.FeatureByCarID(CarID)
+            };
+
+            return View("CarDetailPage", viewModel);
         }
         #endregion
 
@@ -63,13 +70,30 @@ namespace CarRentalServies.Areas.User.Controllers
         #region Booking
 
         [CheckAccess]
-        public IActionResult BookinSave(int CarID, int UserID, string FromDate, string ToDate,string Email)
+        public IActionResult BookinSave(int CarID, int UserID, string FromDate, string ToDate,string TotalFare)
         {
-            if (userDAL.BookingSave(CarID, UserID, FromDate, ToDate))
+            if (userDAL.BookingSave(CarID, UserID, FromDate, ToDate, TotalFare))
             {
                 if (userDAL.UpdateFromAndToDateInCar(CarID, FromDate, ToDate))
                 {
                     //userDAL.SendEmail(Email);
+
+                    //Create Message
+                    MailMessage mailMessage = new MailMessage();
+                    mailMessage.From = new MailAddress("kevindhaduk444@gmail.com");
+                    mailMessage.To.Add("kevindhaduk222@gmail.com");
+                    mailMessage.Subject = "Test Email";
+                    mailMessage.Body = "This is a test email";
+
+                    // Create a SmtpClient to send the email
+                    SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
+                    smtpClient.UseDefaultCredentials = true;
+                    smtpClient.Port = 587; // Update the port if necessary
+                    smtpClient.Credentials = new NetworkCredential("kevindhaduk444@gmail.com", "@Kevin444Dhaduk#");
+                    smtpClient.EnableSsl = true; // Enable SSL if required
+
+                    // Send the email
+                    smtpClient.Send(mailMessage);
                     return RedirectToAction("BookingList");
                 }
 
@@ -78,18 +102,19 @@ namespace CarRentalServies.Areas.User.Controllers
         }
         #endregion
 
-        #region Booking List
+        #region Booking List By UserID
         public IActionResult BookingList()
         {
-            DataTable dataTable = userDAL.BookinghList();
+            int UserID = Convert.ToInt32(CV.UserID());
+            DataTable dataTable = userDAL.BookinghList(UserID);
             return View("BookingList", dataTable);
         }
         #endregion
 
+
         #region Update From and To date in car
         public IActionResult UpdateCarFromAndToDate(int CarID, string? FromDate, string? ToDate)
         {
-
             if (userDAL.UpdateFromAndToDateInCar(CarID, FromDate, ToDate))
             {
                 
@@ -99,6 +124,8 @@ namespace CarRentalServies.Areas.User.Controllers
             return RedirectToAction("BookingList");
         }
         #endregion
+
+        
 
         #region profile
         public IActionResult Profile()
@@ -116,11 +143,32 @@ namespace CarRentalServies.Areas.User.Controllers
         }
         #endregion
 
-        
-        public IActionResult Filter(CarFilterModelUser modelCarFilter)
+        #region Filter
+        public IActionResult Filter(CarFilterModelUser modelCarFilter, string? FromDate, string? ToDate,int CityID)
         {
-            DataTable dt = userDAL.User_Filter(modelCarFilter);
+            TempData["FromDate"] = FromDate;
+            TempData["ToDate"] = ToDate;
+            DataTable dt = userDAL.User_Filter(modelCarFilter,CityID);
             return View("CarList", dt);
+        }
+        #endregion
+
+        public IActionResult Rating(RatingModel modelRating,int CarID)
+        {
+            if (ModelState.IsValid)
+            {
+                if (userDAL.Rating(modelRating))
+                {
+
+                    return RedirectToAction("BookingList");
+                }
+            }
+            return View("BookingList");
+        } 
+
+        public ActionResult RatingPage()
+        {
+            return PartialView();
         }
     }
 }

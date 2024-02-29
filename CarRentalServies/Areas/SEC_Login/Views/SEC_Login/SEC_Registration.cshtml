@@ -28,7 +28,12 @@
                                     <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
                                     <p class="text-center small">Enter your personal details to create account</p>
                                 </div>
-
+                                @if (TempData["Error"] != null)
+                                {
+                                    <div class="text-danger">
+                                        @Html.Raw(@Convert.ToString(TempData["Error"]))
+                                    </div>
+                                }
                                 <form class="row g-3 needs-validation" asp-action="Save" asp-area="SEC_Login" asp-controller="SEC_Login">
                                     <div class="col-12">
                                         <label for="yourName" class="form-label">Your Name</label>

@@ -2,6 +2,7 @@
 using System.Data.Common;
 using System.Data;
 using CarRentalServies.Areas.User.Models;
+using CarRentalServies.BAL;
 
 namespace CarRentalServies.Areas.User.DAL
 {
@@ -130,24 +131,40 @@ namespace CarRentalServies.Areas.User.DAL
         #endregion
 
         #region Booking
-        public bool BookingSave(int CarID,int UserID,string FromDate, string ToDate)
+        public bool BookingSave(int CarID,int UserID,string FromDate, string ToDate,string TotalFare)
         {
             DateTime From = Convert.ToDateTime(FromDate);
             DateTime To = Convert.ToDateTime(ToDate);
-
+            Decimal price = Convert.ToDecimal(TotalFare);
             SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
             DbCommand dbCommand = sqlDatabase.GetStoredProcCommand("PR_Booking_Insert");
             sqlDatabase.AddInParameter(dbCommand, "@CarID", DbType.Int32, CarID);
             sqlDatabase.AddInParameter(dbCommand, "@UserID", DbType.Int32, UserID);
             sqlDatabase.AddInParameter(dbCommand, "@FromDate", DbType.DateTime, From);
             sqlDatabase.AddInParameter(dbCommand, "@ToDate", DbType.DateTime, To);
+            sqlDatabase.AddInParameter(dbCommand, "@TotalFare", DbType.Decimal, price);
             bool isSuccess = Convert.ToBoolean(sqlDatabase.ExecuteNonQuery(dbCommand));
             return isSuccess;
         }
         #endregion
 
         #region BookingList
-        public DataTable BookinghList()
+        public DataTable BookinghList(int UserID)
+        {
+            SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
+            DbCommand dbCommand = sqlDatabase.GetStoredProcCommand("PR_Booking_SelectByUserID");
+            sqlDatabase.AddInParameter(dbCommand, "@UserID", DbType.Int32, UserID);
+            DataTable dataTable = new DataTable();
+            using (IDataReader dataReader = sqlDatabase.ExecuteReader(dbCommand))
+            {
+                dataTable.Load(dataReader);
+            }
+            return dataTable;
+        }
+        #endregion
+
+        #region BookingList
+        public DataTable BookinghListSelectall()
         {
             SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
             DbCommand dbCommand = sqlDatabase.GetStoredProcCommand("PR_Booking_SelectAll");
@@ -190,7 +207,7 @@ namespace CarRentalServies.Areas.User.DAL
         #endregion
  
         #region User Filter
-        public DataTable User_Filter(CarFilterModelUser modelCarUser)
+        public DataTable User_Filter(CarFilterModelUser modelCarUser, int CityID)
         {
             try
             {
@@ -201,7 +218,49 @@ namespace CarRentalServies.Areas.User.DAL
                 sqlDatabase.AddInParameter(dbCommand, "@FuelID", DbType.Int32, modelCarUser.FuelID);
                 sqlDatabase.AddInParameter(dbCommand, "@CarTypeID", DbType.Int32, modelCarUser.CarTypeID);
                 sqlDatabase.AddInParameter(dbCommand, "@SeatNumber", DbType.Int32, modelCarUser.SeatNumber);
-                sqlDatabase.AddInParameter(dbCommand, "@CityID", DbType.Int32, modelCarUser.CityID);
+                sqlDatabase.AddInParameter(dbCommand, "@CityID", DbType.Int32, CityID);
+                DataTable dataTable = new DataTable();
+                using (IDataReader dataReader = sqlDatabase.ExecuteReader(dbCommand))
+                {
+                    dataTable.Load(dataReader);
+                }
+
+                return dataTable;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        #endregion
+
+        public bool Rating(RatingModel modelRating)
+        {
+            try
+            {
+                SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
+                DbCommand dbCommand = sqlDatabase.GetStoredProcCommand("PR_Rating_Insert");
+                sqlDatabase.AddInParameter(dbCommand, "@Rating", DbType.String,modelRating.Rating);
+                sqlDatabase.AddInParameter(dbCommand, "@CarID", DbType.Int32, modelRating.CarID);
+                sqlDatabase.AddInParameter(dbCommand, "@UserID", DbType.Int32, Convert.ToInt32(CV.UserID()));
+                sqlDatabase.AddInParameter(dbCommand, "@Review", DbType.String, modelRating.Review);
+                bool isSuccess = Convert.ToBoolean(sqlDatabase.ExecuteNonQuery(dbCommand));
+                return isSuccess;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        #region Method : Feature By CarID
+        public DataTable FeatureByCarID(int CarID)
+        {
+            try
+            {
+                SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
+                DbCommand dbCommand = sqlDatabase.GetStoredProcCommand("PR_FeatureName");
+                sqlDatabase.AddInParameter(dbCommand, "@CarID", DbType.Int32, CarID);
                 DataTable dataTable = new DataTable();
                 using (IDataReader dataReader = sqlDatabase.ExecuteReader(dbCommand))
                 {

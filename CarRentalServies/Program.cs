@@ -8,6 +8,7 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
+builder.Services.AddHostedService<CarRentalServies.Models.SchedulerServies>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

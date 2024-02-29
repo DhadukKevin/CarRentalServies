@@ -179,5 +179,43 @@ namespace CarRentalServies.Areas.Admin.Controllers
             }
         }
         #endregion
+
+        #region FeatureAddEdit
+        public IActionResult FeatureAddEdit()
+        {
+            return View();
+        }
+        #endregion
+
+        #region FeatureSave
+        public IActionResult FeatureSave(FeatureModel featureModel)
+        {
+            
+            Admin_DAL adminDAL = new Admin_DAL();
+            DataTable dt = adminDAL.CarSelectAll();
+            int carid;
+            if (Convert.ToInt32(TempData["CarID"]) != 0)
+            {
+                carid = Convert.ToInt32(TempData["CarID"]);
+            }
+            else
+            {
+                carid = Convert.ToInt32(dt.Rows[0][0]);
+            }
+            
+            List<FeaturePostModel> posts = carDal.GetFeaturePosts(featureModel,carid);
+
+            foreach(var i in posts)
+            {
+                if(!carDal.Feature_Insert(i.CarID, i.FeatureID))
+                {
+                    break;
+                }
+            }
+
+            return RedirectToAction("CarList", "Admin", new { area = "Admin" });
+        }
+        #endregion
+
     }
 }

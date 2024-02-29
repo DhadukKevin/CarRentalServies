@@ -303,5 +303,93 @@ namespace CarRentalServies.Areas.Admin.DAL
             }
         }
         #endregion
+
+        public List<FeaturePostModel> GetFeaturePosts(FeatureModel modelFeature,int CarID)
+        {
+            List<FeaturePostModel> items = new List<FeaturePostModel>
+            {
+                new FeaturePostModel { CarID = CarID, FeatureID = modelFeature.Airconditions },
+                new FeaturePostModel { CarID = CarID, FeatureID = modelFeature.Child_Seat },
+                new FeaturePostModel { CarID = CarID, FeatureID = modelFeature.GPS },
+                new FeaturePostModel { CarID = CarID, FeatureID = modelFeature.Luggage },
+                new FeaturePostModel { CarID = CarID, FeatureID = modelFeature.Music },
+                new FeaturePostModel { CarID = CarID, FeatureID = modelFeature.Seat_Belt },
+                new FeaturePostModel { CarID = CarID, FeatureID = modelFeature.Sleeping_Bed },
+                new FeaturePostModel { CarID = CarID, FeatureID = modelFeature.Water },
+                new FeaturePostModel { CarID = CarID, FeatureID = modelFeature.Bluetooth },
+                new FeaturePostModel { CarID = CarID, FeatureID = modelFeature.Onboard_computer },
+                new FeaturePostModel { CarID = CarID, FeatureID = modelFeature.Audio_input },
+                new FeaturePostModel { CarID = CarID, FeatureID = modelFeature.Long_Term_Trips },
+                new FeaturePostModel { CarID = CarID, FeatureID = modelFeature.Car_Kit },
+                new FeaturePostModel { CarID = CarID, FeatureID = modelFeature.Remote_central_locking },
+                new FeaturePostModel { CarID = CarID, FeatureID = modelFeature.Climate_control }
+            };
+
+            return items;
+        }
+
+        public DataTable FeatureSelectByCarID(int CarID)
+        {
+            SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
+            DbCommand dbCommand = sqlDatabase.GetStoredProcCommand("PR_Feature_SelectAll");
+            sqlDatabase.AddInParameter(dbCommand, "@CarID", DbType.Int32, CarID);
+            DataTable dt = new DataTable();
+            using (IDataReader dataReader = sqlDatabase.ExecuteReader(dbCommand))
+            {
+                dt.Load(dataReader);
+            }
+            return dt;
+        }
+
+        public bool Feature_Insert(int CarID, int? FeatureID)
+        
+        {
+            DataTable dt = FeatureSelectByCarID(CarID);
+
+            if(dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    if (Convert.ToInt32(dr["CarID"]) == CarID && Convert.ToInt32(dr["FeatureID"]) == FeatureID)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        if (FeatureID == null)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
+                            DbCommand dbCommand = sqlDatabase.GetStoredProcCommand("PR_Feature_Insert");
+                            sqlDatabase.AddInParameter(dbCommand, "@CarID", DbType.Int32, CarID);
+                            sqlDatabase.AddInParameter(dbCommand, "@FeatureID", DbType.Int32, FeatureID);
+                            bool isSuccess = Convert.ToBoolean(sqlDatabase.ExecuteNonQuery(dbCommand));
+                            return isSuccess;
+                        }
+                    }
+                }
+                return false;
+            }
+            else
+            {
+                if (FeatureID == null)
+                {
+                    return true;
+                }
+                else
+                {
+                    SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
+                    DbCommand dbCommand = sqlDatabase.GetStoredProcCommand("PR_Feature_Insert");
+                    sqlDatabase.AddInParameter(dbCommand, "@CarID", DbType.Int32, CarID);
+                    sqlDatabase.AddInParameter(dbCommand, "@FeatureID", DbType.Int32, FeatureID);
+                    bool isSuccess = Convert.ToBoolean(sqlDatabase.ExecuteNonQuery(dbCommand));
+                    return isSuccess;
+                }
+            }
+            
+        }
     }
 }

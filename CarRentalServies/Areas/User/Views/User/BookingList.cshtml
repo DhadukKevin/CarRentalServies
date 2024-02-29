@@ -1,4 +1,4 @@
-﻿@using CarRentalServies.BAL;
+﻿@*@using CarRentalServies.BAL;
 @using System.Data
 @model DataTable
 
@@ -6,11 +6,11 @@
     Layout = "~/Areas/User/Views/shared/Home_Page_Layout.cshtml";
     DateTime FromDate;
     DateTime ToDate;
-    
+
 }
 
 
-<a asp-area="User" asp-controller="User" asp-action="GetCarPage" asp-route-CityID="@Model.Rows[0]["CityID"]" >
+<a asp-controller="Home" asp-action="Index" >
     <i class="bi bi-chevron-left" style=" color:black;"><span style="font-size:15px;">   Back</span></i>
 </a>
 <section class="section" style="margin-top:20px;">
@@ -39,10 +39,7 @@
                         </thead>
                         <tbody>
                             @foreach (DataRow dr in Model.Rows)
-                            {@*
-                                DateTime? From = Convert.ToDateTime(dr["DBFromDate"]);
-                                DateTime? To = Convert.ToDateTime(dr["DBToDate"]);
-                                DateTime date2 = new DateTime(0001, 01, 01, 00, 00, 00);*@
+                            {
                                 int CityID = Convert.ToInt32(dr["CityID"]);
                                 <tr>
                                     <td>@dr["CarID"]</td>
@@ -66,4 +63,139 @@
             </div>
         </div>
     </div>
+</section>*@
+
+
+@using CarRentalServies.Areas.User.Models;
+@using CarRentalServies.BAL;
+@using System.Data
+@model DataTable
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    RatingModel modelRating = new RatingModel();
+    int i = 0;
+    List<int> id = new List<int>();
+}
+
+
+
+<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('@Url.Content("~/assets/image/bg_3.jpg")');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+            <div class="col-md-9 ftco-animate pb-5">
+                <p class="breadcrumbs"><span class="mr-2"><a asp-controller="Home" asp-action="Index">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Booking History <i class="ion-ios-arrow-forward"></i></span></p>
+                <h1 class="mb-3 bread">Booking History</h1>
+            </div>
+        </div>
+    </div>
 </section>
+
+@*<a asp-controller="Home" asp-action="Index">
+    <i class="bi bi-chevron-left" style=" color:black;"><span style="font-size:15px;">   Back</span></i>
+</a>*@
+<section class="section" style="margin-top:20px;">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                @*<div class="d-flex justify-content-between card-header">
+                <div class="">
+                <h5>Booking List</h5>
+                </div>
+                </div>*@
+                <div class="card-body">
+                    <br />
+
+                    <!-- Table with hoverable rows -->
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">&nbsp</th>
+                                <th scope="col">&nbsp</th>
+                                <th scope="col">From Date</th>
+                                <th scope="col">To Date</th>
+                                <th scope="col">Total Fare</th>
+                                @*<th scope="col">Reviews</th>*@
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (DataRow dr in Model.Rows)
+                            {
+                                i++;
+                                id.Add(Convert.ToInt32(dr["CarID"])); 
+                                int CityID = Convert.ToInt32(dr["CityID"]);
+                                modelRating.CarID = Convert.ToInt32(dr["CarID"]);
+                                <tr>
+                                    <td class="car-image"><div class="img" style="background-image:url('@Url.Content(dr["CarPhoto"].ToString())');"></div></td>
+                                    <td>@dr["CarName"]</td>
+                                    <td>@dr["FromDate"]</td>
+                                    <td>@dr["ToDate"]</td>
+                                    <td>@dr["TotalFare"]</td>
+                                    @*<td>
+                                        @{
+                                            if (dr["Rating"].ToString() == "")
+                                            {
+                                            //<button class="open-button" onclick="openForm()" >Open Form</button>
+                                                //<a>
+                                                //    <input type="button" asp-for="@modelRating.CarID" class="btn btn-success" value="Give Rating" onclick="openForm()" />
+                                                //</a>
+                                                <button id="showPopupButton">Show Popup</button>
+                                                //<form>
+                                                //    <input type="hidden" value="@Convert.ToInt32(dr["CarID"])" name="CarID" />
+                                                //    <button class="open-button" onclick="openForm()">Rating</button>
+                                                //</form>
+                                            }
+                                            else
+                                            {
+                                                dr["Rating"].ToString();
+                                            }
+                                        }
+
+                                    </td>*@
+                                    @*<td>@dr["DBFromDate"]   @dr["DBTodate"]</td>*@
+                                    <td>
+                                        @{
+                                            if (dr["DBFromDate"].ToString() != "" && dr["DBToDate"].ToString() != "")
+                                            {
+                                                if (dr["DBFromDate"].ToString() == dr["FromDate"].ToString() && dr["DBToDate"].ToString() == dr["ToDate"].ToString())
+                                                {
+                                                    <a asp-area="User" asp-controller="User" asp-action="UpdateCarFromAndToDate" asp-route-CarID="@dr["CarID"]">
+                                                        <input type="button" class="btn btn-danger" value="End Trip" />
+                                                    </a>
+                                                }
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <!-- End Table with hoverable rows -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@Html.Partial("RatingPage")
+
+@section Scripts
+    {
+    <script>
+
+        function openForm() {
+            
+            document.getElementById("myModal").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("myModal").style.display = "none";
+        }
+        function passCarID(carID) {
+
+        }
+
+    </script>
+    }

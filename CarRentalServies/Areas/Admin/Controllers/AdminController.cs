@@ -1,5 +1,6 @@
 ﻿using CarRentalServies.Areas.Admin.DAL;
 using CarRentalServies.Areas.Admin.Models;
+using CarRentalServies.Areas.User.DAL;
 using CarRentalServies.BAL;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
@@ -21,7 +22,7 @@ namespace CarRentalServies.Areas.Admin.Controllers
             ViewBag.UserCount = adminDal.UserCount();
             ViewBag.CityCount = adminDal.CityCount();
             DataTable dataTable = adminDal.CountTable();
-            return View("Index",dataTable);
+            return View("Index", dataTable);
         }
         #endregion
 
@@ -54,15 +55,17 @@ namespace CarRentalServies.Areas.Admin.Controllers
         #region CarSave
         public IActionResult CarSave(CarModel modelCar)
         {
-            if (ModelState.IsValid)
-            {
-                if (adminDal.CarSave(modelCar))
-                {
-                    return RedirectToAction("CarList");
-                }
 
+            if (adminDal.CarSave(modelCar))
+            {
+                TempData["CarID"] = Convert.ToInt32(modelCar.CarID);
+                return RedirectToAction("FeatureAddEdit", "Car", new {area="Admin"});
             }
-            return View("CarAddEdit");
+            else
+            {
+                return RedirectToAction("CarAddEdit");
+            }
+            
         }
         #endregion
 
@@ -180,6 +183,25 @@ namespace CarRentalServies.Areas.Admin.Controllers
             return View("CarList", dataTable);
         }
         #endregion
+
+        public void RemoveFromAndToDateFromDatabase()
+        {
+            string now = DateTime.Now.ToString("dd/MM/yyyy H:mm")+":00";
+            DataTable dataTable = adminDal.CarSelectAll();
+            foreach (DataRow dr in dataTable.Rows)
+            {
+                if (dr["FromDate"].ToString() != "" && dr["ToDate"].ToString() != "")
+                {
+                    Console.WriteLine("ToDate U: " + dr["ToDate"].ToString());
+                    Console.WriteLine("NowDate U: " + now.ToString());
+                    if (now == dr["ToDate"].ToString())
+                    {
+                        Console.WriteLine("From Date Updated");
+                        adminDal.UpdateFromAndToDateInCar(Convert.ToInt32(dr["CarID"]));
+                    }
+                }
+            }
+        }
 
     }
 }

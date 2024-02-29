@@ -1,4 +1,5 @@
-﻿<html lang="en">
+﻿@using CarRentalServies.BAL;
+<html lang="en">
 <head>
     <title>Carbook - Free Bootstrap 4 Template by Colorlib</title>
     <meta charset="utf-8">
@@ -35,20 +36,85 @@
 
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-                    <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
-                    <li class="nav-item"><a href="pricing.html" class="nav-link">Pricing</a></li>
-                    <li class="nav-item"><a href="car.html" class="nav-link">Cars</a></li>
-                    <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
-                    <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                    <li class="nav-item active"><a asp-controller="Home" asp-action="Index" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a asp-controller="Home" asp-action="About" class="nav-link">About</a></li>
+
+                    @{
+                        if (CV.UserID() == 0)
+                        {
+                            <li class="nav-item"><a asp-area="SEC_login" asp-controller="SEC_Login" asp-action="SEC_LoginPage" class="nav-link">Login/SignUp</a></li>
+                            //<a asp-area="SEC_login" asp-controller="SEC_Login" asp-action="SEC_LoginPage" style="margin-right:30px; color:white; font-weight:bold">
+                            //    Login/SignUp
+                            //</a>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                            <li class="nav-item dropdown pe-5">
+
+                                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                                        @*<img src="@CV.ProfilePhoto()" alt="Profile" class="rounded-circle">*@
+                                    <span class="d-none d-md-block dropdown-toggle ps-2" style="">@CV.Name()</span>
+                                </a><!-- End Profile Iamge Icon -->
+
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                                    <li class="dropdown-header">
+                                        <h6>@CV.Name()</h6>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center" asp-area="User" asp-controller="User" asp-action="Profile">
+                                            <i class="bi bi-person"></i>
+                                            <span>My Profile</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center" asp-area="User" asp-controller="User" asp-action="BookingList">
+                                            <i class="bi bi-gear"></i>
+                                            <span>Booking History</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                                            <i class="bi bi-question-circle"></i>
+                                            <span>Need Help?</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center" asp-controller="Home" asp-action="Index">
+                                            <i class="bi bi-box-arrow-right"></i>
+                                            <span>Sign Out</span>
+                                        </a>
+                                    </li>
+
+                                </ul><!-- End Profile Dropdown Items -->
+                            </li>
+                            </li>
+                            <!-- End Profile Nav -->
+                        }
+
+                    }
                 </ul>
             </div>
         </div>
     </nav>
     <!-- END nav -->
-
-            @RenderBody()
+    @RenderBody()
 
 
     <footer class="ftco-footer ftco-bg-dark ftco-section">
@@ -114,6 +180,7 @@
             </div>
         </div>
     </footer>
+    
     <script src="~/assets/js/jquery.min.js"></script>
     <script src="~/assets/js/jquery-migrate-3.0.1.min.js"></script>
     <script src="~/assets/js/popper.min.js"></script>
@@ -129,6 +196,7 @@
     <script src="~/assets/js/jquery.timepicker.min.js"></script>
     <script src="~/assets/js/scrollax.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&amp;sensor=false"></script>
+    <@*script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>*@
     <script src="~/assets/js/google-map.js"></script>
     <script src="~/assets/js/main.js"></script>
 

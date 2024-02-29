@@ -33,6 +33,7 @@ namespace CarRentalServies.Areas.SEC_Login.Controllers
         [HttpPost]
         public IActionResult Login(SEC_LoginModel modelSEC_User)
         {
+
             string error = null;
             Console.WriteLine("Hello ", modelSEC_User.Name);
             if (modelSEC_User.Name == null)
@@ -98,36 +99,47 @@ namespace CarRentalServies.Areas.SEC_Login.Controllers
         }
         #endregion
 
+        #region User Save
+        public IActionResult Save(SEC_LoginModel loginSEC_Login)
+        {
+            DataTable dt = loginDal.dbo_PR_SEC_Login_SelectByUserName(loginSEC_Login.Name);
+            if(dt.Rows.Count == 0)
+            {
+                string connectionStr = this.Configuration.GetConnectionString("myConnectionString");
+                SqlConnection connection = new SqlConnection(connectionStr);
+                connection.Open();
+                SqlCommand objCmd = connection.CreateCommand();
+                objCmd.CommandType = CommandType.StoredProcedure;
+                objCmd.CommandText = "PR_MST_User_Register";
+
+                objCmd.Parameters.AddWithValue("@Password", loginSEC_Login.Password);
+                objCmd.Parameters.AddWithValue("@Name", loginSEC_Login.Name);
+
+                //objCmd.Parameters.AddWithValue("@MobileNo ", loginSEC_Login.ProfilePhoto);
+                //objCmd.Parameters.AddWithValue("@MobileNo ", loginSEC_Login.MobileNo);
+                objCmd.Parameters.AddWithValue("@Email", loginSEC_Login.Email);
+                objCmd.Parameters.AddWithValue("@CityID", loginSEC_Login.CityID);
+                objCmd.ExecuteNonQuery();
+                connection.Close();
+
+                return RedirectToAction("SEC_LoginPage", "SEC_Login", new { area = "SEC_Login" });
+            }
+            else
+            {
+                TempData["Error"] = "User Name Already exits!!!!";
+                return RedirectToAction("SEC_Registration");
+            }
+            
+            
+        }
+        #endregion
+
         #region LogOut
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
-        #endregion
-
-        #region User Save
-        public IActionResult Save(SEC_LoginModel loginSEC_Login)
-        {
-            string connectionStr = this.Configuration.GetConnectionString("myConnectionString");
-            SqlConnection connection = new SqlConnection(connectionStr);
-            connection.Open();
-            SqlCommand objCmd = connection.CreateCommand();
-            objCmd.CommandType = CommandType.StoredProcedure;
-            objCmd.CommandText = "PR_MST_User_Register";
-            
-            objCmd.Parameters.AddWithValue("@Password", loginSEC_Login.Password);
-            objCmd.Parameters.AddWithValue("@Name", loginSEC_Login.Name);
-
-            //objCmd.Parameters.AddWithValue("@MobileNo ", loginSEC_Login.ProfilePhoto);
-            //objCmd.Parameters.AddWithValue("@MobileNo ", loginSEC_Login.MobileNo);
-            objCmd.Parameters.AddWithValue("@Email", loginSEC_Login.Email);
-            objCmd.Parameters.AddWithValue("@CityID", loginSEC_Login.CityID);
-            objCmd.ExecuteNonQuery();
-            connection.Close();
-
-            return RedirectToAction("Index", "Home");
-        }
-        #endregion
+        #endregion'
     }
 }

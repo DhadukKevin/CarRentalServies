@@ -5,23 +5,15 @@ namespace CarRentalServies.Areas.Admin.Models
     public class CarModel
     {
         public int? CarID { get; set; }
-        [Required]
         public string? CarName { get; set; }
         public string? CarPhoto { get; set; }
-        [Required]
         public int? TransmissionID { get; set; }
-        [Required]
         public int? FuelID { get; set; }
-        [Required]
         public int? CarTypeID { get; set; }
-        [Required]
         public string? CarDetail { get; set; }
-        [Required]
         public decimal? Kms { get; set; }
-        [Required]
         public int? CityID { get; set; }
         public string? Location { get; set; }
-        [Required]
         public decimal? Price { get; set; }
         public IFormFile? CarImage { get; set; }
     }

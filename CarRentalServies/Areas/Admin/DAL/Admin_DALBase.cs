@@ -57,7 +57,7 @@ namespace CarRentalServies.Areas.Admin.DAL
                 if (modelCar.CarID == null)
                 {
                     Admin_DAL adminDAL = new Admin_DAL();
-                    
+
                     if (modelCar.CarImage != null)
                     {
                         string FilePath = "wwwroot\\images";
@@ -280,6 +280,21 @@ namespace CarRentalServies.Areas.Admin.DAL
             {
                 return null;
             }
+        }
+        #endregion
+
+        #region Update From and To Date in Car
+        public bool UpdateFromAndToDateInCar(int CarID)
+        {
+            SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
+            DbCommand dbCommand = sqlDatabase.GetStoredProcCommand("PR_MST_Car_UpdateFromAndToDate");
+
+            sqlDatabase.AddInParameter(dbCommand, "@CarID", DbType.Int32, CarID);
+            sqlDatabase.AddInParameter(dbCommand, "@FromDate", DbType.Int32, null);
+            sqlDatabase.AddInParameter(dbCommand, "@ToDate", DbType.Int32, null);
+
+            bool isSuccess = Convert.ToBoolean(sqlDatabase.ExecuteNonQuery(dbCommand));
+            return isSuccess;
         }
         #endregion
     }

@@ -155,7 +155,7 @@
 
             <li class="nav-item">
                 <div class="details f-1 as-fe">
-                    <form method="post" asp-controller="User" asp-action="Filter" asp-area="User">
+                    <form method="post" asp-controller="User" asp-action="Filter" asp-area="User" asp-route-FromDate="@TempData["FromDate"].ToString()" asp-route-ToDate="@TempData["ToDate"].ToString()" asp-route-CityID="@Convert.ToInt32(TempData["CityID"])">
                        
                         <div class="col-md-12" >
                             <p style="color:black; font-weight:600">

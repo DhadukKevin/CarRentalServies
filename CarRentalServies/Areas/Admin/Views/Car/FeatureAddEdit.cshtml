@@ -1,0 +1,68 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/shared/_Admin_Layout.cshtml";
+}
+@model CarRentalServies.Areas.Admin.Models.FeatureModel
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Car type Add/Edit Page</h5>
+
+        <!-- No Labels Form -->
+        <form class="row g-3" method="post" asp-controller="Car" asp-action="FeatureSave" asp-area="Admin">
+
+            <div class="col-md-3">
+                <input type="checkbox" class="checkbox-item" value="1" name="Airconditions" />Airconditions<br />
+            </div>
+            <div class="col-md-3">
+                <input type="checkbox" class="checkbox-item" value="2" name="Child_Seat" />Child Seat<br />
+            </div>
+            <div class="col-md-3">
+                <input type="checkbox" class="checkbox-item" value="3" name="GPS" />GPS<br />
+            </div>
+            <div class="col-md-3">
+                <input type="checkbox" class="checkbox-item" value="4" name="Luggage" />Luggage<br />
+            </div>
+            <div class="col-md-3">
+                <input type="checkbox" class="checkbox-item" value="5" name="Music" />Music<br />
+            </div>
+            <div class="col-md-3">
+                <input type="checkbox" class="checkbox-item" value="6" name="Seat_Belt" />Seat_Belt<br />
+            </div>
+            <div class="col-md-3">
+                <input type="checkbox" class="checkbox-item" value="7" name="Sleeping_Bed" />Sleeping_Bed<br />
+            </div>
+            <div class="col-md-3">
+                <input type="checkbox" class="checkbox-item" value="8" name="Water" />Water<br />
+            </div>
+            <div class="col-md-3">
+                <input type="checkbox" class="checkbox-item" value="9" name="Bluetooth" />Bluetooth<br />
+            </div>
+            <div class="col-md-3">
+                <input type="checkbox" class="checkbox-item" value="10" name="Onboard_computer" />Onboard_computer<br />
+                
+            </div>
+            <div class="col-md-3">
+                <input type="checkbox" class="checkbox-item" value="11" name="Audio_input" />Audio_input<br />
+                </div>
+            <div class="col-md-3">
+                <input type="checkbox" class="checkbox-item" value="12" name="Long_Term_Trips" />Long_Term_Trips<br />
+            </div>
+            <div class="col-md-3">
+                <input type="checkbox" class="checkbox-item" value="13" name="Car_Kit" />Car_Kit<br />
+            </div>
+            <div class="col-md-3">
+                <input type="checkbox" class="checkbox-item" value="14" name="Remote_central_locking" />Remote_central_locking<br />
+            </div>
+            <div class="col-md-3">
+                <input type="checkbox" class="checkbox-item" value="15" name="Climate_control" />Climate_control<br />
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+            </div>
+        </form><!-- End No Labels Form -->
+
+    </div>
+
+</div>
