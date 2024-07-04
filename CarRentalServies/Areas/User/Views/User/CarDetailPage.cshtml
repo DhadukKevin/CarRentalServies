@@ -1,180 +1,11 @@
-﻿@*@using System.Globalization;
-@using CarRentalServies.BAL;
-@model CarRentalServies.Areas.User.Models.CarModel
-@{
-    Layout = "~/Areas/User/Views/shared/Home_Page_Layout.cshtml";
-
-
-
-    DateTime FromDate = Convert.ToDateTime(TempData["FromDate"]);
-    DateTime ToDate = Convert.ToDateTime(TempData["ToDate"]);
-
-    TimeSpan value = ToDate.Subtract(FromDate);
-    int hour = 0;
-    if (value.Days>0)
-    {
-        hour =value.Days * 24;
-        hour = hour + value.Hours;
-    }
-    else
-    {
-        hour = value.Hours;
-    }
-
-    decimal? price = hour * Model.Price;
-}
-
-<a asp-area="User" asp-controller="User" asp-action="CarByCityIDFromDateToDate" asp-route-CityID="@Model.CityID" asp-route-FromDate="@FromDate" asp-route-ToDate="@ToDate">
-    <h6>Back</h6>
-</a>
-<div class="row">
-    <div class="col-xl-8">
-        <div class="card">
-            <div class="card-body">
-                <br />
-                <!-- Slides only carousel -->
-                <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel" style="padding: 0px 0px 0px 150px;">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active" >
-                            <img src="@Url.Content(Model.CarPhoto)" style="height: 250px; width:500px;" alt="...">
-                        </div>
-                    </div>
-                </div><!-- End Slides only carousel-->
-
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-body">
-                <br />
-                <div class="row" style="display: inline-flex; width:500px;">
-                    <div class="column column-md-6">
-                        <h5 style="font-weight:bolder; font-size:large;">@Model.CarName</h5>
-                    </div>
-                    <div class="column column-md-6">
-                        <h5 style="font-weight:bolder; font-size:large;">From</h5>
-                    </div>
-                    <div class="column column-md-6">
-                        <h6>@FromDate</h6>
-                    </div>
-
-                </div>
-                <div class="row" style="display: inline-flex;">
-                    <div class="column column-md-6">
-                        <h5 style="font-weight:bolder; font-size:large;">To</h5>
-                    </div>
-                    <div class="column column-md-6">
-                        <h6>@ToDate</h6>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card" style="padding:15px 10px;">
-            <div class="card-body">
-                <div class="row">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            <div class="column">
-                                <h3 style="font-weight:bolder; margin:-5px">@Model.CarName</h3>
-                            </div>
-                            <div class="column">
-                                <p class="card-text" style="font-size: small; margin-bottom: -15px;color: rgba(196, 191, 190);">@Model.TransmissionName - @Model.CarTypeName - @Model.SeatNumber Seats</p>
-                                <br />
-                                <i class="bi bi-star-fill">&nbsp &nbsp4.3</i>
-                            </div>
-                            <br />
-                        </li>
-                        <li class="list-group-item">
-                            <h3 style="font-weight:bolder; margin:20px 0px 0px 0px;">Booking Time</h3>
-                            <div class="card" style="margin:10px; padding:10px 0px 10px 0px; box-shadow:1px 1px 1px 1px grey;">
-                                <div class="card-body">
-                                    <div class="row" style="display: inline-flex;">
-                                        <div class="column column-md-6">
-                                            <h5 style="font-weight:bolder; font-size:large;">From</h5>
-                                        </div>
-                                        <div class="column column-md-6">
-                                            <h6>@FromDate</h6>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="row" style="display: inline-flex; margin-left: 100px;margin-right: 100px;">
-                                        <div class="column column-md-6">
-                                            <i class="bi bi-arrow-right"></i>
-                                        </div>
-                                    </div>
-
-                                    <div class="row" style="display: inline-flex;">
-                                        <div class="column column-md-6">
-                                            <h5 style="font-weight:bolder; font-size:large; text-align:end;">To</h5>
-                                        </div>
-                                        <div class="column column-md-6" style="text-align:end;">
-                                            <h6>@ToDate</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-4">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="column column-md-6">
-                            <h5 style="font-weight:bolder; font-size:large;">Total Hours</h5>
-                        </div>
-                        <h5>@hour</h5>
-                    </div>
-                    <div class="col-md-6">
-
-                        <div class="column column-md-6">
-                            <h5 style="font-weight:bolder; font-size:large;">Total Fare</h5>
-                        </div>
-                        <h5>@price</h5>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="d-grid gap-2 mt-3">
-                        <a asp-area="User" asp-controller="User" asp-action="BookinSave" asp-route-CarID="@Model.CarID" asp-route-UserID="@CV.UserID()" asp-route-FromDate="@TempData["FromDate"]" asp-route-ToDate="@TempData["ToDate"]" asp-route-Email="@CV.Email()" onclick="return fun1();">
-                            <input type="button" class="btn btn-success" value="Book Car" />
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-@section Scripts
-    {
-    <script>
-        function fun1() {
-            if (confirm("Are you sure you want to Book \n @Model.CarName \n From @FromDate.ToString() To @ToDate.ToString()")) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-    </script>
-}
-*@
-
-@using System.Globalization;
+﻿@using System.Globalization;
 @using CarRentalServies.BAL;
 @using System.Data;
 @model CarRentalServies.Areas.User.Models.MyViewModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-
+    int count = Convert.ToInt32(TempData["RatingCount"]);
 
     DateTime FromDate = Convert.ToDateTime(TempData["FromDate"]);
     DateTime ToDate = Convert.ToDateTime(TempData["ToDate"]);
@@ -199,7 +30,17 @@
     <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
             <div class="col-md-9 ftco-animate pb-5">
-                <p class="breadcrumbs"><span class="mr-2"><a asp-controller="Home" asp-action="Index">Home <i class="ion-ios-arrow-forward"></i></a></span><span class="mr-2"><a asp-area="User" asp-controller="User" asp-action="CarByCityIDFromDateToDate" asp-route-CityID="@Model.modelCar.CityID" asp-route-FromDate="@FromDate" asp-route-ToDate="@ToDate">Cars <i class="ion-ios-arrow-forward"></i></a></span> <span>Car details <i class="ion-ios-arrow-forward"></i></span></p>
+                <p class="breadcrumbs">
+                    <span class="mr-2">
+                        <a asp-controller="Home" asp-action="Index">Home <i class="ion-ios-arrow-forward"></i></a>
+                    </span>
+                    <span class="mr-2">
+                        <a asp-area="User" asp-controller="User" asp-action="CarByCityIDFromDateToDate" asp-route-CityID="@Model.modelCar.CityID" asp-route-FromDate="@FromDate.ToString()" asp-route-ToDate="@ToDate.ToString()">Cars <i class="ion-ios-arrow-forward"></i></a>
+                    </span>
+                    <span>
+                        Car details <i class="ion-ios-arrow-forward"></i>
+                    </span>
+                </p>
                 <h1 class="mb-3 bread">Car Details</h1>
             </div>
         </div>
@@ -367,137 +208,39 @@
                         </div>
 
                         <div class="tab-pane fade" id="pills-manufacturer" role="tabpanel" aria-labelledby="pills-manufacturer-tab">
-                            <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.</p>
-                            <p>When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then she continued her way.</p>
+                            @Model.modelCar.CarDetail
                         </div>
 
                         <div class="tab-pane fade" id="pills-review" role="tabpanel" aria-labelledby="pills-review-tab">
                             <div class="row">
                                 <div class="col-md-7">
-                                    <h3 class="head">23 Reviews</h3>
-                                    <div class="review d-flex">
-                                        <div class="user-img" style="background-image: url(images/person_1.jpg)"></div>
-                                        <div class="desc">
-                                            <h4>
-                                                <span class="text-left">Jacob Webb</span>
-                                                <span class="text-right">14 March 2018</span>
-                                            </h4>
-                                            <p class="star">
-                                                <span>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                </span>
-                                                <span class="text-right"><a href="#" class="reply"><i class="icon-reply"></i></a></span>
-                                            </p>
-                                            <p>When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrov</p>
+                                    <h3 class="head">@count Reviews</h3>
+                                    @foreach (DataRow dataRow in Model.dt1.Rows)
+                                    {
+                                        <div class="review d-flex">
+                                            <div class="user-img" style="background-image: url(images/person_1.jpg)"></div>
+                                            <div class="desc">
+                                                <h4>
+                                                    <span class="text-left">@dataRow["Name"]</span>
+                                                    <span class="text-right">@dataRow["ReviewDate"]</span>
+                                                </h4>
+                                                <p class="star">
+                                                    <span>
+                                                        @{
+                                                            for (int i = 1; i <= Convert.ToInt32(dataRow["Rating"]); i++)
+                                                            {
+                                                                <i class="ion-ios-star"></i>
+                                                            }
+                                                        }
+                                                    </span>
+                                                    <span class="text-right"><a href="#" class="reply"><i class="icon-reply"></i></a></span>
+                                                </p>
+                                                <p>@dataRow["Review"]</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="review d-flex">
-                                        <div class="user-img" style="background-image: url(images/person_2.jpg)"></div>
-                                        <div class="desc">
-                                            <h4>
-                                                <span class="text-left">Jacob Webb</span>
-                                                <span class="text-right">14 March 2018</span>
-                                            </h4>
-                                            <p class="star">
-                                                <span>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                </span>
-                                                <span class="text-right"><a href="#" class="reply"><i class="icon-reply"></i></a></span>
-                                            </p>
-                                            <p>When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrov</p>
-                                        </div>
-                                    </div>
-                                    <div class="review d-flex">
-                                        <div class="user-img" style="background-image: url(images/person_3.jpg)"></div>
-                                        <div class="desc">
-                                            <h4>
-                                                <span class="text-left">Jacob Webb</span>
-                                                <span class="text-right">14 March 2018</span>
-                                            </h4>
-                                            <p class="star">
-                                                <span>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                </span>
-                                                <span class="text-right"><a href="#" class="reply"><i class="icon-reply"></i></a></span>
-                                            </p>
-                                            <p>When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrov</p>
-                                        </div>
-                                    </div>
+                                    }
                                 </div>
-                                <div class="col-md-5">
-                                    <div class="rating-wrap">
-                                        <h3 class="head">Give a Review</h3>
-                                        <div class="wrap">
-                                            <p class="star">
-                                                <span>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    (98%)
-                                                </span>
-                                                <span>20 Reviews</span>
-                                            </p>
-                                            <p class="star">
-                                                <span>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    (85%)
-                                                </span>
-                                                <span>10 Reviews</span>
-                                            </p>
-                                            <p class="star">
-                                                <span>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    (70%)
-                                                </span>
-                                                <span>5 Reviews</span>
-                                            </p>
-                                            <p class="star">
-                                                <span>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    (10%)
-                                                </span>
-                                                <span>0 Reviews</span>
-                                            </p>
-                                            <p class="star">
-                                                <span>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    <i class="ion-ios-star"></i>
-                                                    (0%)
-                                                </span>
-                                                <span>0 Reviews</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>

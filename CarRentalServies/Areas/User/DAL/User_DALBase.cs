@@ -77,6 +77,7 @@ namespace CarRentalServies.Areas.User.DAL
                     modelCar.CityName = dataRow["CityName"].ToString();
                     modelCar.Location = dataRow["Location"].ToString();
                     modelCar.Price = Convert.ToDecimal(dataRow["Price"]);
+                    modelCar.LicensePlate = dataRow["CarPlateNo"].ToString();
                     //modelCar.FromDate = Convert.ToDateTime(dataRow["FromDate"]);
                     //if (Convert.ToDateTime(dataRow["FromDate"]).Equals(null))
                     //{
@@ -234,16 +235,16 @@ namespace CarRentalServies.Areas.User.DAL
         }
         #endregion
 
-        public bool Rating(RatingModel modelRating)
+        public bool Rating(string Rating, string Review, int CarID)
         {
             try
             {
                 SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
                 DbCommand dbCommand = sqlDatabase.GetStoredProcCommand("PR_Rating_Insert");
-                sqlDatabase.AddInParameter(dbCommand, "@Rating", DbType.String,modelRating.Rating);
-                sqlDatabase.AddInParameter(dbCommand, "@CarID", DbType.Int32, modelRating.CarID);
+                sqlDatabase.AddInParameter(dbCommand, "@Rating", DbType.Decimal,Convert.ToDecimal(Rating));
+                sqlDatabase.AddInParameter(dbCommand, "@CarID", DbType.Int32,Convert.ToInt32(CarID));
                 sqlDatabase.AddInParameter(dbCommand, "@UserID", DbType.Int32, Convert.ToInt32(CV.UserID()));
-                sqlDatabase.AddInParameter(dbCommand, "@Review", DbType.String, modelRating.Review);
+                sqlDatabase.AddInParameter(dbCommand, "@Review", DbType.String, Review);
                 bool isSuccess = Convert.ToBoolean(sqlDatabase.ExecuteNonQuery(dbCommand));
                 return isSuccess;
             }
@@ -261,6 +262,75 @@ namespace CarRentalServies.Areas.User.DAL
                 SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
                 DbCommand dbCommand = sqlDatabase.GetStoredProcCommand("PR_FeatureName");
                 sqlDatabase.AddInParameter(dbCommand, "@CarID", DbType.Int32, CarID);
+                DataTable dataTable = new DataTable();
+                using (IDataReader dataReader = sqlDatabase.ExecuteReader(dbCommand))
+                {
+                    dataTable.Load(dataReader);
+                }
+
+                return dataTable;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        #endregion
+
+        #region Method : Rating By CarID
+        public DataTable RatingByCarID(int CarID)
+        {
+            try
+            {
+                SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
+                DbCommand dbCommand = sqlDatabase.GetStoredProcCommand("PR_Rating_SelectByCarID");
+                sqlDatabase.AddInParameter(dbCommand, "@CarID", DbType.Int32, CarID);
+                DataTable dataTable = new DataTable();
+                using (IDataReader dataReader = sqlDatabase.ExecuteReader(dbCommand))
+                {
+                    dataTable.Load(dataReader);
+                }
+
+                return dataTable;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        #endregion
+
+        public Int32 RatingCount(int CarID)
+        {
+            try
+            {
+                int countRaring = 0;
+                SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
+                DbCommand dbCommand = sqlDatabase.GetStoredProcCommand("PR_Car_Count");
+                DataTable dataTable = new DataTable();
+                using (IDataReader dataReader = sqlDatabase.ExecuteReader(dbCommand))
+                {
+                    dataTable.Load(dataReader);
+                }
+                foreach (DataRow dataRow in dataTable.Rows)
+                {
+                    countRaring = Convert.ToInt32(dataRow["countRaring"]);
+                }
+                return countRaring;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
+
+        #region Method : Top 5 Car
+        public DataTable SelectTopCars()
+        {
+            try
+            {
+                SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
+                DbCommand dbCommand = sqlDatabase.GetStoredProcCommand("PR_MST_Car_SelectTop5Car");
                 DataTable dataTable = new DataTable();
                 using (IDataReader dataReader = sqlDatabase.ExecuteReader(dbCommand))
                 {

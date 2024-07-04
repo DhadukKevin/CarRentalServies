@@ -78,7 +78,49 @@
     List<int> id = new List<int>();
 }
 
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
 
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+    /* The Close Button */
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+</style>
 
 <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('@Url.Content("~/assets/image/bg_3.jpg")');" data-stellar-background-ratio="0.5">
     <div class="overlay"></div>
@@ -113,10 +155,11 @@
                             <tr>
                                 <th scope="col">&nbsp</th>
                                 <th scope="col">&nbsp</th>
+                                <th scope="col">&nbsp</th>
                                 <th scope="col">From Date</th>
                                 <th scope="col">To Date</th>
                                 <th scope="col">Total Fare</th>
-                                @*<th scope="col">Reviews</th>*@
+                                <th scope="col">Reviews</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
@@ -124,36 +167,30 @@
                             @foreach (DataRow dr in Model.Rows)
                             {
                                 i++;
-                                id.Add(Convert.ToInt32(dr["CarID"])); 
+                                id.Add(Convert.ToInt32(dr["CarID"]));
                                 int CityID = Convert.ToInt32(dr["CityID"]);
                                 modelRating.CarID = Convert.ToInt32(dr["CarID"]);
                                 <tr>
                                     <td class="car-image"><div class="img" style="background-image:url('@Url.Content(dr["CarPhoto"].ToString())');"></div></td>
+
                                     <td>@dr["CarName"]</td>
+                                    <td class="carId">@dr["CarID"]</td>
                                     <td>@dr["FromDate"]</td>
                                     <td>@dr["ToDate"]</td>
                                     <td>@dr["TotalFare"]</td>
-                                    @*<td>
+                                    <td>
                                         @{
                                             if (dr["Rating"].ToString() == "")
                                             {
-                                            //<button class="open-button" onclick="openForm()" >Open Form</button>
-                                                //<a>
-                                                //    <input type="button" asp-for="@modelRating.CarID" class="btn btn-success" value="Give Rating" onclick="openForm()" />
-                                                //</a>
-                                                <button id="showPopupButton">Show Popup</button>
-                                                //<form>
-                                                //    <input type="hidden" value="@Convert.ToInt32(dr["CarID"])" name="CarID" />
-                                                //    <button class="open-button" onclick="openForm()">Rating</button>
-                                                //</form>
+                                                <button class="btn btn-success" id="actionButton" onclick="openForm()">Click</button>
                                             }
                                             else
                                             {
-                                                dr["Rating"].ToString();
+                                                <p>@dr["Rating"]</p>
                                             }
                                         }
 
-                                    </td>*@
+                                    </td>
                                     @*<td>@dr["DBFromDate"]   @dr["DBTodate"]</td>*@
                                     <td>
                                         @{
@@ -167,6 +204,7 @@
                                                 }
                                             }
                                         }
+
                                     </td>
                                 </tr>
                             }
@@ -179,23 +217,61 @@
         </div>
     </div>
 </section>
-@Html.Partial("RatingPage")
+
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close" onclick="closeForm()">&times;</span>
+        <br />
+        <form asp-area="User" asp-controller="User" asp-action="RatingCar">
+
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="myInput" value="carid" name="CarID" placeholder="Ratings" />
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" name="Rating" placeholder="Ratings" />
+                </div>
+                <div class="col-md-12">
+                    <input type="text" class="form-control" name="Review" placeholder="Write Review....." />
+                </div>
+            </div>
+            <br />
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-secondary" onclick="closeForm()">Reset</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 @section Scripts
     {
-    <script>
+        <script>
 
-        function openForm() {
-            
-            document.getElementById("myModal").style.display = "block";
-        }
+            function openForm() {
+                document.getElementById("myModal").style.display = "block";
+            }
 
-        function closeForm() {
-            document.getElementById("myModal").style.display = "none";
-        }
-        function passCarID(carID) {
+            function closeForm() {
+                document.getElementById("myModal").style.display = "none";
+            }
 
-        }
+            var value;
+            var buttons = document.querySelectorAll('#actionButton');
+            var carId;
+            buttons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    var row = button.closest('tr');
+                    carId = row.querySelector('.carId').innerText;
+                    console.log("CarID:", carId);
+                    var inputElement = document.getElementById("myInput");
+                    inputElement.value = parseInt(carId);
+                });
+            });
 
-    </script>
-    }
+        </script>
+    }

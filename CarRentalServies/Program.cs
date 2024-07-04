@@ -9,6 +9,7 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
 builder.Services.AddHostedService<CarRentalServies.Models.SchedulerServies>();
+builder.Services.AddSingleton<IEmailService>(new EmailService("smtp.gmail.com", 587, "carbookservies@gmail.com", "urylzgcznckxuixg"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

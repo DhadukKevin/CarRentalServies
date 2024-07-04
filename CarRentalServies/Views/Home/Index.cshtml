@@ -1,5 +1,4 @@
-﻿
-@*@{
+﻿@*@{
 
     Layout = "~/Views/Shared/Index_Layout.cshtml";
 
@@ -7,7 +6,7 @@
 @using CarRentalServies.Areas.User.Models
 @model CityDropDownModel
 
-<div class="card"> 
+<div class="card">
     <img src="~/img/vistara_banner.jpg" style="height:500px">
 </div>
 
@@ -40,12 +39,14 @@
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    CityDropDownModel model = new CityDropDownModel();
 }
 @using CarRentalServies.Areas.User.Models
-@model CityDropDownModel
+@using System.Data
+@model DataTable
 
 <div class="hero-wrap ftco-degree-bg" style="background-image: url('@Url.Content("~/assets/image/bg_1.jpg")')" data-stellar-background-ratio="0.5">
-    
+
     <div class="overlay"></div>
     <div class="container">
         <div class="row no-gutters slider-text justify-content-start align-items-center justify-content-center">
@@ -73,14 +74,36 @@
             <div class="col-md-12	featured-top">
                 <div class="row no-gutters">
                     <div class="col-md-6 d-flex align-items-center">
-                        <form method="post" asp-controller="User" asp-action="CarByCityIDFromDateToDate" asp-area="User"  class="request-form ftco-animate bg-primary">
+                        <form method="post" asp-controller="User" asp-action="CarByCityIDFromDateToDate" asp-area="User" class="request-form ftco-animate bg-primary">
                             <h2>Make your trip</h2>
                             <div class="form-group">
                                 <label for="" class="label">Select City</label>
-                                <select class="form-control" style="color:black;" name="CityID" asp-items="@(new SelectList(ViewBag.CityList,"CityID","CityName"))">
-                                    <option>Select City</option>
+                                <style>
+                                    /* Style for the dropdown container */
+                                    .dropdown-container {
+                                        background-color: rgba(17,137,254,255); /* Set your desired background color here */
+                                        width: 200px; /* Set width as needed */
+                                        border:none; /* Optional: Add some border-radius for rounded corners */
+                                        overflow: hidden; /* Ensure options don't overflow */
+                                    }
+
+                                        /* Style for the dropdown options */
+                                        .dropdown-container select {
+                                            width: 100%;
+                                            padding: 10px;
+                                            border: none;
+                                            background-color: transparent; /* Ensure dropdown arrow is visible */
+                                        }
+                                </style>
+                                <div class="dropdown-container">
+                                <select id="myDropdown"  name="CityID" asp-items="@(new SelectList(ViewBag.CityList,"CityID","CityName"))" >
+                                    <option >Select City</option>
                                 </select>
+                                </div>
                             </div>
+                            @*This Is Custome Tag Helper*@
+                            @*<Kevin></Kevin>
+                            <Cute ImageLink="" AltText="Image Here"></Cute>*@
                             <div class="d-flex">
                                 <div class="form-group mr-2">
                                     <label for="" class="label">Pick-up date</label>
@@ -91,7 +114,7 @@
                                     <input type="datetime-local" class="form-control" name="ToDate" placeholder="Date">
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
                                 <input type="submit" value="Rent A Car Now" class="btn btn-secondary py-3 px-4">
                             </div>
@@ -146,62 +169,23 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="carousel-car owl-carousel">
-                    <div class="item">
-                        <div class="car-wrap rounded ftco-animate">
-                            <div class="img rounded d-flex align-items-end" style="background-image: url('@Url.Content("~/assets/image/car-1.jpg")');">
-                            </div>
-                            <div class="text">
-                                <h2 class="mb-0"><a href="#">Mercedes Grand Sedan</a></h2>
-                                <div class="d-flex mb-3">
-                                    <span class="cat">Cheverolet</span>
-                                    <p class="price ml-auto">$500 <span>/day</span></p>
+                    @foreach(DataRow dataRow in Model.Rows)
+                    {
+                        <div class="item">
+                            <div class="car-wrap rounded ftco-animate">
+                                <div class="img rounded d-flex align-items-end" style="background-image: url('@Url.Content(dataRow["CarPhoto"].ToString())');">
                                 </div>
-                                <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
+                                <div class="text">
+                                    <h2 class="mb-0"><a href="car-single.html">@dataRow["CarName"]</a></h2>
+                                    <div class="d-flex mb-3">
+                                        <span class="cat">@dataRow["TransmissionName"] @dataRow["CarTypeName"]</span>
+                                        <p class="price ml-auto">₹@dataRow["Price"] <span>/hour</span></p>
+                                    </div>
+                                    <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a asp-area="User" asp-controller="User" asp-action="CarDetailPage" asp-route-CarID="@dataRow["CarID"]" class="btn btn-secondary py-2 ml-1">Details</a></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="item">
-                        <div class="car-wrap rounded ftco-animate">
-                            <div class="img rounded d-flex align-items-end" style="background-image: url('@Url.Content("~/assets/image/car-2.jpg")');">
-                            </div>
-                            <div class="text">
-                                <h2 class="mb-0"><a href="#">Mercedes Grand Sedan</a></h2>
-                                <div class="d-flex mb-3">
-                                    <span class="cat">Cheverolet</span>
-                                    <p class="price ml-auto">$500 <span>/day</span></p>
-                                </div>
-                                <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="car-wrap rounded ftco-animate">
-                            <div class="img rounded d-flex align-items-end" style="background-image: url('@Url.Content("~/assets/image/car-3.jpg")');">
-                            </div>
-                            <div class="text">
-                                <h2 class="mb-0"><a href="#">Mercedes Grand Sedan</a></h2>
-                                <div class="d-flex mb-3">
-                                    <span class="cat">Cheverolet</span>
-                                    <p class="price ml-auto">$500 <span>/day</span></p>
-                                </div>
-                                <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="car-wrap rounded ftco-animate">
-                            <div class="img rounded d-flex align-items-end" style="background-image: url('@Url.Content("~/assets/image/car-4.jpg")');">
-                            </div>
-                            <div class="text">
-                                <h2 class="mb-0"><a href="#">Mercedes Grand Sedan</a></h2>
-                                <div class="d-flex mb-3">
-                                    <span class="cat">Cheverolet</span>
-                                    <p class="price ml-auto">$500 <span>/day</span></p>
-                                </div>
-                                <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
-                            </div>
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>
@@ -457,4 +441,4 @@
             </div>
         </div>
     </div>
-</section>	
+</section>

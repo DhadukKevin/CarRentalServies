@@ -10,6 +10,7 @@ namespace CarRentalServies.BAL
             var rd = filterContext.RouteData;
             string currentAction = rd.Values["action"].ToString();
             string currentController = rd.Values["controller"].ToString();
+            string currentArea = rd.Values["area"].ToString();
             //string currentArea = rd.DataTokens["area"].ToString();
 
             if (filterContext.HttpContext.Session.GetString("UserID") == null)

@@ -30,6 +30,27 @@ namespace CarRentalServies.Areas.Admin.DAL
         }
         #endregion
 
+        #region Method : Select Car Whose From Date And To Date Is Not Null
+        public DataTable CarSelectByFromAndToDate()
+        {
+            try
+            {
+                SqlDatabase sqlDatabase = new SqlDatabase(ConnectionString);
+                DbCommand dbCommand = sqlDatabase.GetStoredProcCommand("PR_MST_Car_Select_By_FromDate_ToDate");
+                DataTable dataTable = new DataTable();
+                using (IDataReader dataReader = sqlDatabase.ExecuteReader(dbCommand))
+                {
+                    dataTable.Load(dataReader);
+                }
+                return dataTable;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        #endregion
+
         #region Method : Car Delete
         public bool CarDelete(int CarID)
         {

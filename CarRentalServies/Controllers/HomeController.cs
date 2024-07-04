@@ -1,6 +1,7 @@
 ﻿using CarRentalServies.Areas.User.DAL;
 using CarRentalServies.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using System.Diagnostics;
 
 namespace CarRentalServies.Controllers
@@ -17,7 +18,9 @@ namespace CarRentalServies.Controllers
         public IActionResult Index()
         {
             ViewBag.CityList = userDAL.CityDropDown();
-            return View();
+            DataTable dt = new DataTable();
+            dt = userDAL.SelectTopCars();
+            return View(dt);
         }
         public IActionResult Temp()
         {

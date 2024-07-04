@@ -2,8 +2,10 @@
 using CarRentalServies.Areas.Admin.Models;
 using CarRentalServies.Areas.User.DAL;
 using CarRentalServies.BAL;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Globalization;
 
 namespace CarRentalServies.Areas.Admin.Controllers
 {
@@ -59,13 +61,13 @@ namespace CarRentalServies.Areas.Admin.Controllers
             if (adminDal.CarSave(modelCar))
             {
                 TempData["CarID"] = Convert.ToInt32(modelCar.CarID);
-                return RedirectToAction("FeatureAddEdit", "Car", new {area="Admin"});
+                return RedirectToAction("FeatureAddEdit", "Car", new { area = "Admin" });
             }
             else
             {
                 return RedirectToAction("CarAddEdit");
             }
-            
+
         }
         #endregion
 
@@ -184,24 +186,35 @@ namespace CarRentalServies.Areas.Admin.Controllers
         }
         #endregion
 
+        #region Update Car detail 
         public void RemoveFromAndToDateFromDatabase()
         {
-            string now = DateTime.Now.ToString("dd/MM/yyyy H:mm")+":00";
-            DataTable dataTable = adminDal.CarSelectAll();
+            string now = DateTime.Now.ToString("dd/MM/yyyy HH:m");
+            Console.WriteLine("DateTime Now : " + now);
+            CultureInfo provider = CultureInfo.InvariantCulture;
+
+            DataTable dataTable = adminDal.CarSelectByFromAndToDate();
             foreach (DataRow dr in dataTable.Rows)
             {
-                if (dr["FromDate"].ToString() != "" && dr["ToDate"].ToString() != "")
+                //DateTime dateTime10 = DateTime.ParseExact(dr["ToDate"].ToString(), "dd/MM/yyyy H", null);
+                Console.WriteLine("ToDate U: " + dr["ToDate"]);
+                Console.WriteLine("NowDate U: " + now.ToString());
+                if (Convert.ToDateTime(dr["ToDate"]) < Convert.ToDateTime(now))
                 {
-                    Console.WriteLine("ToDate U: " + dr["ToDate"].ToString());
-                    Console.WriteLine("NowDate U: " + now.ToString());
-                    if (now == dr["ToDate"].ToString())
-                    {
-                        Console.WriteLine("From Date Updated");
-                        adminDal.UpdateFromAndToDateInCar(Convert.ToInt32(dr["CarID"]));
-                    }
+                    Console.WriteLine("From Date Updated");
+                    adminDal.UpdateFromAndToDateInCar(Convert.ToInt32(dr["CarID"]));
+                }
+
+                if (now == dr["ToDate"].ToString())
+                {
+                    Console.WriteLine("To Date Updated");
+                    adminDal.UpdateFromAndToDateInCar(Convert.ToInt32(dr["CarID"]));
                 }
             }
         }
-
+        #endregion
     }
 }
+
+
+
